@@ -1,5 +1,16 @@
 ## Mandatory tasks:
 
+- [ ] Perform a preliminary data exploration analysis to understand how your data look like
+      and to formulate initial hypotheses (choose your analysis direction and strategy).
+- [ ] Consolidate your hypotheses and start to prepare your data for the analysis.
+- [ ] Design a data analysis campaign, provide a proof to your hypotheses.
+- [ ] Prepare a 10 minutes (please respect this timeline) PowerPoint (or similar tool)
+      presentation for discussing your project during the exam
+- [ ] You have to think also to data scalability and you should IMAGINE
+      that your data source could be a Big Data Source. Therefore, you have to design a
+      solution (provide an architecture) that scales in such a Big Data context. Do not make
+      assumptions about input data dimension unless you are filtering them - meaning that
+      you control the final size (using your Big Data tools).
 - [ ] You must write at least one batch MapReduce Job on Hadoop (you can also use Hive -
       in this case, you may expect questions on the form of your Mapper and Reducer
       functions)
