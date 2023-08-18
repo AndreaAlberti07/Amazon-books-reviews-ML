@@ -3,16 +3,15 @@
 - NLP:
 
   - [Amazon Books Reviews](https://www.kaggle.com/datasets/mohamedbakhet/amazon-books-reviews)
-
-      <details>
+    <details>
       <summary markdown="span">Davide comments</summary>
 
-        - There are a lot of informations about the reviews and books,
+    - There are a lot of informations about the reviews and books,
           so there are a lot of possible hypotesis.
 
-        - Easy to analyse data
+    - Easy to analyse data
 
-        - Approved
+    - Approved
 
     </details>
 
