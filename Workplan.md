@@ -32,7 +32,7 @@ Goal of the project is to develop a scalable solution to analyze a dataset of re
 
 ### 1.4. Data Collection
 The chosen dataset is [Amazon Books Reviews](https://www.kaggle.com/datasets/mohamedbakhet/amazon-books-reviews).
-It contains 2.4 million reviews of books from Amazon. The dataset is composed by 2 tables:
+142.8 million reviews spanning May 1996 - July 2014. The dataset is composed by 2 tables:
 
 ### - Books Ratings table
 
@@ -67,12 +67,265 @@ It contains 2.4 million reviews of books from Amazon. The dataset is composed by
 
 ### 1.5. Hypotheses Formulation
 
+- ***Hypothesis***: Reviews with longer text have higher helpfulness ratings.
+    - **Metric**: Correlation coefficient (e.g., Pearson's correlation) between review length and helpfulness ratings.
+    - **Model**: Linear Regression.
+    - **Description**:
+        - Use the review length as the predictor variable and the helpfulness rating as the target variable.
+        - Train a linear regression model to predict helpfulness ratings based on review length.
+        - The correlation coefficient can also be calculated as a post-processing step.
+    ---
+
+- ***Hypothesis***: Reviews with more positive sentiment words receive higher helpfulness ratings.
+    - **Metric**: Mean helpfulness ratings for positive and negative words.
+    - **Model**: Multinomial Naive Bayes.
+    - **Description**:
+        - Use NBC as a classifier to predict the sentiment of a review.
+        - Extract the most useful words from the classifier.
+        - Compute the mean helpfulness ratings for the most useful words.
+    ---
+
+- ***Hypothesis***: Reviews with higher average book ratings have higher helpfulness ratings.
+    - **Metric**: Correlation between average book ratings and helpfulness ratings.
+    - **Model**: Linear Regression
+    - **Description**:
+        - Use the average book rating as the predictor variable and the helpfulness rating as the target variable.
+        - Train a linear regression model to predict helpfulness ratings based on average book ratings.
+    ---
+
+- ***Hypothesis***: Reviews with more specific and descriptive summaries are perceived as more helpful.
+    - **Metric**: Compare the mean helpfulness ratings of reviews with detailed summaries against those with vague summaries.
+    - **Model**: NLP methods.
+    - **Description**:
+        - Convert the review summaries into numerical features using techniques like TF-IDF or word embeddings.
+        - Train a classification model to classify reviews as having detailed or vague summaries.
+        - Compare the mean helpfulness ratings for reviews predicted as detailed vs. vague.
+    ---
+
+- ***Hypothesis***: Reviews written by users with a history of providing helpful reviews receive higher helpfulness ratings.
+    - **Metric**: Compare the mean helpfulness ratings for reviews by users with a history of high helpfulness ratings against those without such a history.
+    - **Model**: User-based Features and Classification.
+    - **Description**:
+        - Aggregate user-level statistics (e.g., average helpfulness ratings of their previous reviews).
+        - Train a classification model to predict whether a review will be helpful based on user-related features.
+        - Compare the mean helpfulness ratings for reviews predicted as helpful by users with a history of high helpfulness vs. others.
+
+---
+
+
 ## 2. DATA PREPARATION
-### 2.0. Data Aggregation
-### 2.1. Data Cleaning
-### 2.2. Data Transformation
-### 2.3. Feature Extraction
-### 2.4. Metric Definition
+
+### 2.1. Data Loading on HDFS
+
+```bash
+# Replace these paths with your actual paths
+LOCAL_PATH="/path/to/local/files"
+HDFS_PATH="/path/in/hdfs"
+
+# Create HDFS directories if they don't exist
+hdfs dfs -mkdir -p "$HDFS_PATH/ratings"
+hdfs dfs -mkdir -p "$HDFS_PATH/books_info"
+
+# Copy local files to HDFS
+hdfs dfs -copyFromLocal "$LOCAL_PATH/ratings.csv" "$HDFS_PATH/ratings/"
+hdfs dfs -copyFromLocal "$LOCAL_PATH/books_info.csv" "$HDFS_PATH/books_info/"
+```
+
+### 2.2. Data Cleaning with Spark
+- Schema definition to better control over data
+
+```python
+# Books Ratings table schema
+from pyspark.sql.types import StructType, StructField, IntegerType, StringType, FloatType
+
+ratings_schema = StructType([
+    StructField("Id", IntegerType(), True),
+    StructField("Title", StringType(), True),
+    StructField("Price", FloatType(), True),
+    StructField("User_id", IntegerType(), True),
+    StructField("profileName", StringType(), True),
+    StructField("review/helpfulness", StringType(), True),
+    StructField("review/score", FloatType(), True),
+    StructField("review/time", IntegerType(), True),
+    StructField("review/summary", StringType(), True),
+    StructField("review/text", StringType(), True)
+])
+
+# Books Info table schema
+from pyspark.sql.types import StructType, StructField, StringType, FloatType, IntegerType
+
+info_schema = StructType([
+    StructField("Title", StringType(), True),
+    StructField("description", StringType(), True),
+    StructField("authors", StringType(), True),
+    StructField("image", StringType(), True),
+    StructField("previewLink", StringType(), True),
+    StructField("publisher", StringType(), True),
+    StructField("publishedDate", StringType(), True),
+    StructField("infoLink", StringType(), True),
+    StructField("categories", StringType(), True),
+    StructField("ratingsCount", IntegerType(), True)
+])
+
+# Execution
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder \
+    .appName("LoadDataWithSchema") \
+    .getOrCreate()
+
+ratings_df = spark.read.csv("path_to_ratings.csv", header=True, schema=ratings_schema)
+info_df = spark.read.csv("path_to_books_info.csv", header=True, schema=info_schema)
+
+# Continue with data processing or analysis...
+
+spark.stop()
+
+```
+
+
+- Remove duplicates
+- Deal with missing values
+
+```python
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col
+
+# Initialize a Spark session
+spark = SparkSession.builder \
+    .appName("DuplicateRemovalAndMissingDataHandling") \
+    .getOrCreate()
+
+# Load data from CSV files into DataFrames
+ratings_df = spark.read.csv("path_to_ratings.csv", header=True, inferSchema=True)
+info_df = spark.read.csv("path_to_books_info.csv", header=True, inferSchema=True)
+
+# Drop duplicates from ratings DataFrame based on ID
+ratings_df = ratings_df.dropDuplicates(subset=["Id"])
+
+# Fill missing values in ratings DataFrame with default values
+ratings_df = ratings_df.fillna({"Price": 0.0, "review/score": 0.0})
+
+# Drop duplicates from info DataFrame based on Title
+info_df = info_df.dropDuplicates(subset=["Title"])
+
+# Fill missing values in info DataFrame with default values
+info_df = info_df.fillna({"authors": "Unknown", "categories": "Unknown"})
+
+# Perform the join operation on the Title column
+joined_df = ratings_df.join(info_df, on="Title", how="inner")
+
+# Select desired columns from the joined DataFrame
+selected_columns = [
+    "Title", "Price", "User_id", "profileName",
+    "review/helpfulness", "review/score",
+    "authors", "categories"
+]
+result_df = joined_df.select(selected_columns)
+
+# Show the resulting DataFrame
+result_df.show()
+
+# Stop the Spark session
+spark.stop()
+```
+
+### 2.3. Data Aggregation
+- Program a MapReduce job to join the data by book title
+
+```python
+# Mapper function for Books Ratings table
+def map_ratings(line):
+    fields = line.split("\t")  # Assuming fields are tab-separated
+    book_title = fields[1]
+    # Emit (book_title, ("ratings", fields)) as key-value pair
+    emit(book_title, ("ratings", fields))
+
+# Mapper function for Books Info table
+def map_info(line):
+    fields = line.split("\t")  # Assuming fields are tab-separated
+    book_title = fields[0]
+    # Emit (book_title, ("info", fields)) as key-value pair
+    emit(book_title, ("info", fields))
+
+# Reducer function
+def reduce_join(key, values):
+    ratings = []
+    info = []
+    
+    # Separate values into ratings and info lists based on their source
+    for value_type, fields in values:
+        if value_type == "ratings":
+            ratings.append(fields)
+        elif value_type == "info":
+            info.append(fields)
+    
+    # Perform the join operation
+    for rating_fields in ratings:
+        for info_fields in info:
+            # Emit joined information as key-value pair
+            emit(None, (rating_fields + info_fields))
+
+# Input: Read lines from both tables
+for line in BooksRatingsTable:
+    map_ratings(line)
+
+for line in BooksInfoTable:
+    map_info(line)
+
+# Sort and shuffle step
+sort_and_shuffle()
+
+# Process sorted and shuffled data
+for key, values in shuffled_data:
+    reduce_join(key, values)
+```
+
+### 2.4. Data Transformation
+
+### 2.5. Load into MongoDB
+
+```bash
+pip install pymongo[tls] pyspark
+```
+```python
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col
+from pyspark.sql.types import StructType, StructField, IntegerType, StringType, FloatType
+from pyspark.sql import DataFrameWriter
+
+# Initialize a Spark session
+spark = SparkSession.builder \
+    .appName("LoadDataToMongoDB") \
+    .config("spark.mongodb.output.uri", "mongodb://localhost:27017/mydb.collection") \
+    .getOrCreate()
+
+# Define schema for the transformed data
+transformed_schema = StructType([
+    StructField("Title", StringType(), True),
+    StructField("Price", FloatType(), True),
+    StructField("User_id", IntegerType(), True),
+    # ... define other transformed fields
+])
+
+# Load, filter, and transform data
+ratings_df = spark.read.csv("path_to_ratings.csv", header=True, inferSchema=True)
+
+filtered_ratings_df = ratings_df.filter(col("review/score") >= 4)  # Example filter
+
+transformed_df = filtered_ratings_df.select("Title", "Price", "User_id")
+
+# Write the transformed data to MongoDB
+transformed_df.write \
+    .format("mongo") \
+    .mode("overwrite") \
+    .save()
+
+# Stop the Spark session
+spark.stop()
+```
+
+### 2.5. Feature Extraction
 
 
 ## 3. MODEL CHOICE
@@ -91,4 +344,3 @@ It contains 2.4 million reviews of books from Amazon. The dataset is composed by
 ### 5.1.4. MSE
 
 ## 6. REPORTING
-
