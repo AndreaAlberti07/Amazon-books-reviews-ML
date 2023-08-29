@@ -68,10 +68,11 @@ The chosen dataset is [Amazon Books Reviews](https://www.kaggle.com/datasets/moh
 ### 1.5. Hypotheses Formulation
 
 - ***Hypothesis***: Reviews with longer text have higher helpfulness ratings.
-    - **Metric**: Correlation coefficient (e.g., Pearson's correlation) between review length and helpfulness ratings.
+    - **Metric**: Correlation coefficient (e.g., Pearson's correlation) between review length and helpfulness ratings. Plot the correlation coefficient as a function of the review length.
     - **Model**: Linear Regression.
     - **Description**:
-        - Use the review length as the predictor variable and the helpfulness rating as the target variable.
+        - Add a column for each review's length.
+        - Use the review length as the predictor variable and the helpfulness rating as the target variable. (i.e. activate feature only above a given threshold)
         - Train a linear regression model to predict helpfulness ratings based on review length.
         - The correlation coefficient can also be calculated as a post-processing step.
     ---
@@ -110,6 +111,16 @@ The chosen dataset is [Amazon Books Reviews](https://www.kaggle.com/datasets/moh
         - Train a classification model to predict whether a review will be helpful based on user-related features.
         - Compare the mean helpfulness ratings for reviews predicted as helpful by users with a history of high helpfulness vs. others.
 
+    ---
+
+- **Hytpothesis**: There is a relationship between the number of reviews of a specific user and the helpfulness of his reviews.
+    - **Metric**: Correlation between the number of reviews of a specific user and the helpfulness of his reviews.
+    - **Model**: Linear Regression.
+    - **Description**:
+        - Add a column for each user's number of reviews.
+        - Use the number of reviews as the predictor variable and the helpfulness rating as the target variable.
+        - Train a linear regression model to predict helpfulness ratings based on the number of reviews.
+    
 ---
 
 
