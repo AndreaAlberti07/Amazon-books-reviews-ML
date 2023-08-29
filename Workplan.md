@@ -325,7 +325,11 @@ transformed_df.write \
 spark.stop()
 ```
 
-### 2.5. Feature Extraction
+### 2.6. Complex MongoDB query
+
+### 2.7. Feature Extraction
+
+### 2.8. Local analysis with Python Libraries
 
 
 ## 3. MODEL CHOICE
