@@ -1,19 +1,25 @@
 # **WORKFLOW**
 
 ## 1. DISCOVERY
+
 ### 1.1. Team
+
 The team is composed by three members:
+
 - **Andrea Alberti** ([GitHub](https://github.com/AndreaAlberti07))
 - **Davide Ligari** ([GitHub](https://github.com/DavideLigari01))
 - **Cristian Andreoli** ([GitHub](https://github.com/CristianAndreoli94))
 
 ### 1.2. Tools
+
 To deal with the Big Data the following tools will be used:
+
 - [Hadoop](https://hadoop.apache.org/)
 - [Spark](https://spark.apache.org/)
 - [MongoDB](https://www.mongodb.com/)
 
 To analyze the data the following tools will be used together with Python:
+
 - [Pandas](https://pandas.pydata.org/)
 - [Scikit-learn](https://scikit-learn.org/stable/)
 - [Seaborn](https://seaborn.pydata.org/)
@@ -21,7 +27,9 @@ To analyze the data the following tools will be used together with Python:
 - [Jupyter Notebook](https://jupyter.org/)
 
 ### 1.3. Framing
+
 Goal of the project is to develop a scalable solution to analyze a dataset of reviews of books from Amazon. Possible analysis are:
+
 - Sentiment Analysis
 - Review Helpfulness Prediction
 - Topic Modeling
@@ -29,100 +37,107 @@ Goal of the project is to develop a scalable solution to analyze a dataset of re
 - Common Issues Analysis
 - Category Prediction
 
-
 ### 1.4. Data Collection
+
 The chosen dataset is [Amazon Books Reviews](https://www.kaggle.com/datasets/mohamedbakhet/amazon-books-reviews).
 142.8 million reviews spanning May 1996 - July 2014. The dataset is composed by 2 tables:
 
 ### - Books Ratings table
 
-| Column              | Description                           |
-|---------------------|---------------------------------------|
-| **Id**                  | The ID of the book                    |
-| **Title**               | The title of the book                 |
-| **Price**               | The price of the book                 |
-| **User_id**             | The ID of the user who rated the book |
-| **profileName**         | The name of the user who rated the book|
-| **review/helpfulness** | Helpfulness rating of the review (e.g. 2/3)|
-| **review/score**        | Rating from 0 to 5 for the book       |
-| **review/time**         | Time the review was given             |
-| **review/summary**     | The summary of the text review        |
-| **review/text**         | The full text of the review           |
+| Column                 | Description                                 |
+| ---------------------- | ------------------------------------------- |
+| **Id**                 | The ID of the book                          |
+| **Title**              | The title of the book                       |
+| **Price**              | The price of the book                       |
+| **User_id**            | The ID of the user who rated the book       |
+| **profileName**        | The name of the user who rated the book     |
+| **review/helpfulness** | Helpfulness rating of the review (e.g. 2/3) |
+| **review/score**       | Rating from 0 to 5 for the book             |
+| **review/time**        | Time the review was given                   |
+| **review/summary**     | The summary of the text review              |
+| **review/text**        | The full text of the review                 |
 
 ### - Books Info table
 
-| Column           | Description                                     |
-|------------------|-------------------------------------------------|
-| **Title**        | Book title                                      |
-| **description**  | Description of the book                        |
-| **authors**      | Name of book authors                           |
-| **image**        | URL for book cover                             |
-| **previewLink**  | Link to access this book on Google Books       |
-| **publisher**    | Name of the publisher                          |
-| **publishedDate**| The date of publish                            |
-| **infoLink**     | Link to get more information about the book on Google Books |
-| **categories**   | Genres of books                                |
-| **ratingsCount** | Number of ratings and reviews for the book     |
-
+| Column            | Description                                                 |
+| ----------------- | ----------------------------------------------------------- |
+| **Title**         | Book title                                                  |
+| **description**   | Description of the book                                     |
+| **authors**       | Name of book authors                                        |
+| **image**         | URL for book cover                                          |
+| **previewLink**   | Link to access this book on Google Books                    |
+| **publisher**     | Name of the publisher                                       |
+| **publishedDate** | The date of publish                                         |
+| **infoLink**      | Link to get more information about the book on Google Books |
+| **categories**    | Genres of books                                             |
+| **ratingsCount**  | Number of ratings and reviews for the book                  |
 
 ### 1.5. Hypotheses Formulation
 
-- ***Hypothesis***: Reviews with longer text have higher helpfulness ratings.
-    - **Metric**: Correlation coefficient (e.g., Pearson's correlation) between review length and helpfulness ratings. Plot the correlation coefficient as a function of the review length.
-    - **Model**: Linear Regression.
-    - **Description**:
-        - Add a column for each review's length.
-        - Use the review length as the predictor variable and the helpfulness rating as the target variable. (i.e. activate feature only above a given threshold)
-        - Train a linear regression model to predict helpfulness ratings based on review length.
-        - The correlation coefficient can also be calculated as a post-processing step.
-    ---
+1. **_Hypothesis_**: Reviews with longer text have higher helpfulness ratings.
 
-- ***Hypothesis***: Reviews with more positive sentiment words receive higher helpfulness ratings.
-    - **Metric**: Mean helpfulness ratings for positive and negative words.
-    - **Model**: Multinomial Naive Bayes.
-    - **Description**:
-        - Use NBC as a classifier to predict the sentiment of a review.
-        - Extract the most useful words from the classifier.
-        - Compute the mean helpfulness ratings for the most useful words.
-    ---
+   - **Metric**: Correlation coefficient (e.g., Pearson's correlation) between review length and helpfulness ratings. Plot the correlation coefficient as a function of the review length.
+   - **Model**: Linear Regression.
+   - **Description**:
+     - Add a column for each review's length.
+     - Use the review length as the predictor variable and the helpfulness rating as the target variable. (i.e. activate feature only above a given threshold)
+     - Train a linear regression model to predict helpfulness ratings based on review length.
+     - The correlation coefficient can also be calculated as a post-processing step.
 
-- ***Hypothesis***: Reviews with higher average book ratings have higher helpfulness ratings.
-    - **Metric**: Correlation between average book ratings and helpfulness ratings.
-    - **Model**: Linear Regression
-    - **Description**:
-        - Use the average book rating as the predictor variable and the helpfulness rating as the target variable.
-        - Train a linear regression model to predict helpfulness ratings based on average book ratings.
-    ---
+   ***
 
-- ***Hypothesis***: Reviews with more specific and descriptive summaries are perceived as more helpful.
-    - **Metric**: Compare the mean helpfulness ratings of reviews with detailed summaries against those with vague summaries.
-    - **Model**: NLP methods.
-    - **Description**:
-        - Convert the review summaries into numerical features using techniques like TF-IDF or word embeddings.
-        - Train a classification model to classify reviews as having detailed or vague summaries.
-        - Compare the mean helpfulness ratings for reviews predicted as detailed vs. vague.
-    ---
+2. **_Hypothesis_**: Reviews with more positive sentiment words receive higher helpfulness ratings.
 
-- ***Hypothesis***: Reviews written by users with a history of providing helpful reviews receive higher helpfulness ratings.
-    - **Metric**: Compare the mean helpfulness ratings for reviews by users with a history of high helpfulness ratings against those without such a history.
-    - **Model**: User-based Features and Classification.
-    - **Description**:
-        - Aggregate user-level statistics (e.g., average helpfulness ratings of their previous reviews).
-        - Train a classification model to predict whether a review will be helpful based on user-related features.
-        - Compare the mean helpfulness ratings for reviews predicted as helpful by users with a history of high helpfulness vs. others.
+   - **Metric**: Mean helpfulness ratings for positive and negative words.
+   - **Model**: Multinomial Naive Bayes.
+   - **Description**:
+     - Use NBC as a classifier to predict the sentiment of a review.
+     - Extract the most useful words from the classifier.
+     - Compute the mean helpfulness ratings for the most useful words.
 
-    ---
+   ***
 
-- **Hytpothesis**: There is a relationship between the number of reviews of a specific user and the helpfulness of his reviews.
-    - **Metric**: Correlation between the number of reviews of a specific user and the helpfulness of his reviews.
-    - **Model**: Linear Regression.
-    - **Description**:
-        - Add a column for each user's number of reviews.
-        - Use the number of reviews as the predictor variable and the helpfulness rating as the target variable.
-        - Train a linear regression model to predict helpfulness ratings based on the number of reviews.
-    
+3. **_Hypothesis_**: Reviews with higher average book ratings have higher helpfulness ratings.
+
+   - **Metric**: Correlation between average book ratings and helpfulness ratings.
+   - **Model**: Linear Regression
+   - **Description**:
+     - Use the average book rating as the predictor variable and the helpfulness rating as the target variable.
+     - Train a linear regression model to predict helpfulness ratings based on average book ratings.
+
+   ***
+
+4. **_Hypothesis_**: Reviews with more specific and descriptive summaries are perceived as more helpful.
+
+   - **Metric**: Compare the mean helpfulness ratings of reviews with detailed summaries against those with vague summaries.
+   - **Model**: NLP methods.
+   - **Description**:
+     - Convert the review summaries into numerical features using techniques like TF-IDF or word embeddings.
+     - Train a classification model to classify reviews as having detailed or vague summaries.
+     - Compare the mean helpfulness ratings for reviews predicted as detailed vs. vague.
+
+   ***
+
+5. **_Hypothesis_**: Reviews written by users with a history of providing helpful reviews receive higher helpfulness ratings.
+
+   - **Metric**: Compare the mean helpfulness ratings for reviews by users with a history of high helpfulness ratings against those without such a history.
+   - **Model**: User-based Features and Classification.
+   - **Description**:
+     - Aggregate user-level statistics (e.g., average helpfulness ratings of their previous reviews).
+     - Train a classification model to predict whether a review will be helpful based on user-related features.
+     - Compare the mean helpfulness ratings for reviews predicted as helpful by users with a history of high helpfulness vs. others.
+
+   ***
+
+6. **Hytpothesis**: There is a relationship between the number of reviews of a specific user and the helpfulness of his reviews.
+   - **Metric**: Correlation between the number of reviews of a specific user and the helpfulness of his reviews.
+   - **Model**: Linear Regression.
+   - **Description**:
+     - Add a column for each user's number of reviews.
+     - Use the number of reviews as the predictor variable and the helpfulness rating as the target variable.
+     - Train a linear regression model to predict helpfulness ratings based on the number of reviews.
+
 ---
-
 
 ## 2. DATA PREPARATION
 
@@ -143,6 +158,7 @@ hdfs dfs -copyFromLocal "$LOCAL_PATH/books_info.csv" "$HDFS_PATH/books_info/"
 ```
 
 ### 2.2. Data Cleaning with Spark
+
 - Schema definition to better control over data
 
 ```python
@@ -194,7 +210,6 @@ spark.stop()
 
 ```
 
-
 - Remove duplicates
 - Deal with missing values
 
@@ -242,6 +257,7 @@ spark.stop()
 ```
 
 ### 2.3. Data Aggregation
+
 - Program a MapReduce job to join the data by book title
 
 ```python
@@ -263,14 +279,14 @@ def map_info(line):
 def reduce_join(key, values):
     ratings = []
     info = []
-    
+
     # Separate values into ratings and info lists based on their source
     for value_type, fields in values:
         if value_type == "ratings":
             ratings.append(fields)
         elif value_type == "info":
             info.append(fields)
-    
+
     # Perform the join operation
     for rating_fields in ratings:
         for info_fields in info:
@@ -299,6 +315,7 @@ for key, values in shuffled_data:
 ```bash
 pip install pymongo[tls] pyspark
 ```
+
 ```python
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col
@@ -342,20 +359,26 @@ spark.stop()
 
 ### 2.8. Local analysis with Python Libraries
 
-
 ## 3. MODEL CHOICE
+
 ### 3.1. Classification
+
 ### 3.1.2. Regression
+
 ### 3.1.3. Clustering
+
 ### 3.1.4. Dimensionality Reduction
 
 ## 4. MODEL BUILDING
 
-
 ## 5. EVALUATION
+
 ### 5.1. Accuracy
+
 ### 5.1.2. PR
+
 ### 5.1.3. ROC
+
 ### 5.1.4. MSE
 
 ## 6. REPORTING
