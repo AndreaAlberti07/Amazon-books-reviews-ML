@@ -77,65 +77,134 @@ The chosen dataset is [Amazon Books Reviews](https://www.kaggle.com/datasets/moh
 1. **_Hypothesis_**: Reviews with longer text have higher helpfulness ratings.
 
    - **Metric**: Correlation coefficient (e.g., Pearson's correlation) between review length and helpfulness ratings. Plot the correlation coefficient as a function of the review length.
+
    - **Model**: Linear Regression.
+
    - **Description**:
      - Add a column for each review's length.
      - Use the review length as the predictor variable and the helpfulness rating as the target variable. (i.e. activate feature only above a given threshold)
      - Train a linear regression model to predict helpfulness ratings based on review length.
      - The correlation coefficient can also be calculated as a post-processing step.
 
-   ***
+- **Missing Values**:
+  - `review/text`: set missing values as empty string
+  - `review/helpfulness`: remove the entire sample
+
+- **Data Transformation**:
+  - `review/text`: ...
+  - `review/helpfulness`: $helpfulness = \frac{x}{y} \sqrt(y)$
+
+  ***
 
 2. **_Hypothesis_**: Reviews with more positive sentiment words receive higher helpfulness ratings.
 
    - **Metric**: Mean helpfulness ratings for positive and negative words.
+
    - **Model**: Multinomial Naive Bayes.
+
    - **Description**:
+
      - Use NBC as a classifier to predict the sentiment of a review.
      - Extract the most useful words from the classifier.
      - Compute the mean helpfulness ratings for the most useful words.
+
+   - **Missing Values**:
+   - `review/text`: remove the entire sample
+   - `review/helpfulness`: remove the entire sample
+
+   - **Data Transformation**:
+   - `review/text`: Assign 1 to score (4, 5), 0 to score (1, 2). Create the BoW for the text. Fit a MNBC and count the number of positive and negative words. Graphical Plot.
+   - `review/helpfulness`: $helpfulness = \frac{x}{y} \sqrt(y)$
 
    ***
 
 3. **_Hypothesis_**: Reviews with higher average book ratings have higher helpfulness ratings.
 
    - **Metric**: Correlation between average book ratings and helpfulness ratings.
+
    - **Model**: Linear Regression
+
    - **Description**:
+
      - Use the average book rating as the predictor variable and the helpfulness rating as the target variable.
      - Train a linear regression model to predict helpfulness ratings based on average book ratings.
+
+   - **Missing Values**:
+
+     - `review/score`: remove the entire sample
+     - `review/helpfulness`: remove the entire sample
+
+   - **Data Transformation**:
+     - `review/score`: groupBy book title and calculate the average score.
+     - `review/helpfulness`: $helpfulness = \frac{x}{y} \sqrt(y)$
 
    ***
 
 4. **_Hypothesis_**: Reviews with more specific and descriptive summaries are perceived as more helpful.
 
    - **Metric**: Compare the mean helpfulness ratings of reviews with detailed summaries against those with vague summaries.
+
    - **Model**: NLP methods.
+
    - **Description**:
+
      - Convert the review summaries into numerical features using techniques like TF-IDF or word embeddings.
      - Train a classification model to classify reviews as having detailed or vague summaries.
      - Compare the mean helpfulness ratings for reviews predicted as detailed vs. vague.
+
+   - **Missing Values**:
+
+     - `review/summary`: set missing values as empty string
+     - `review/helpfulness`: remove the entire sample
+
+   - **Data Transformation**:
+     - `review/summary`: ...
+     - `review/helpfulness`: $helpfulness = \frac{x}{y} \sqrt(y)$
 
    ***
 
 5. **_Hypothesis_**: Reviews written by users with a history of providing helpful reviews receive higher helpfulness ratings.
 
    - **Metric**: Compare the mean helpfulness ratings for reviews by users with a history of high helpfulness ratings against those without such a history.
+
    - **Model**: User-based Features and Classification.
+
    - **Description**:
+
      - Aggregate user-level statistics (e.g., average helpfulness ratings of their previous reviews).
      - Train a classification model to predict whether a review will be helpful based on user-related features.
      - Compare the mean helpfulness ratings for reviews predicted as helpful by users with a history of high helpfulness vs. others.
 
+   - **Missing Values**:
+
+     - `profileName`: Make a separate group for 'Anonymous' users.
+     - `review/helpfulness`: remove the entire sample
+
+   - **Data Transformation**:
+     - `profileName`: Transform the helpfulness. GroupBy profileName and average the helpfulness of the reviews.
+     - `review/helpfulness`: $helpfulness = \frac{x}{y} \sqrt(y)$
+
    ***
 
-6. **Hytpothesis**: There is a relationship between the number of reviews of a specific user and the helpfulness of his reviews.
+6. **_Hypothesis_**: There is a relationship between the number of reviews of a specific user and the helpfulness of his reviews.
+
    - **Metric**: Correlation between the number of reviews of a specific user and the helpfulness of his reviews.
    - **Model**: Linear Regression.
+
    - **Description**:
+
      - Add a column for each user's number of reviews.
      - Use the number of reviews as the predictor variable and the helpfulness rating as the target variable.
      - Train a linear regression model to predict helpfulness ratings based on the number of reviews.
+
+   - **Missing Values**:
+
+     - `profileName`: Make a separate group for 'Anonymous' users.
+     - `review/helpfulness`: remove the entire sample
+
+   - **Data Transformation**:
+     - `profileName`: GroupBy profileName and count the reviews.
+     - `review/helpfulness`: $helpfulness = \frac{x}{y} \sqrt(y)$
 
 ---
 
