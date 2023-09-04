@@ -9,7 +9,7 @@ REDUCER_SCRIPT="join_reducer.py"
 INPUT_FILES="hdfs://localhost:9900/user/book_reviews/books_data.csv,hdfs://localhost:9900/user/book_reviews/books_rating.csv"
 
 # Specify the output directory where the job results will be stored
-OUTPUT_DIR="hdfs://localhost:9900/user/book_reviews/output"
+OUTPUT_DIR="hdfs://localhost:9900/user/book_reviews/output.csv"
 
 # Run the Hadoop Streaming job
 hadoop jar $HADOOP_STREAMING_JAR \
