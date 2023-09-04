@@ -14,8 +14,8 @@ OUTPUT_DIR="hdfs://localhost:9900/user/book_reviews/output"
 # Run the Hadoop Streaming job
 hadoop jar $HADOOP_STREAMING_JAR \
 -files $MAPPER_SCRIPT,$REDUCER_SCRIPT \
--mapper "python $MAPPER_SCRIPT" \
--reducer "python $REDUCER_SCRIPT" \
+-mapper "$MAPPER_SCRIPT" \
+-reducer "$REDUCER_SCRIPT" \
 -input $INPUT_FILES \
 -output $OUTPUT_DIR
 
