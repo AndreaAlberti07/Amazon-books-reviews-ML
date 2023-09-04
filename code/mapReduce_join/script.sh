@@ -18,4 +18,3 @@ hadoop jar $HADOOP_STREAMING_JAR \
 -reducer "$REDUCER_SCRIPT" \
 -input $INPUT_FILES \
 -output $OUTPUT_DIR
-
