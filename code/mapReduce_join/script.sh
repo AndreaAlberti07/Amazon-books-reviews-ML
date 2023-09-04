@@ -1,5 +1,5 @@
 # Specify the Hadoop Streaming JAR file
-HADOOP_STREAMING_JAR="$HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-*.jar"
+HADOOP_STREAMING_JAR="$HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-3.3.6.jar"
 
 # Specify the Mapper and Reducer scripts
 MAPPER_SCRIPT="join_mapper.py"

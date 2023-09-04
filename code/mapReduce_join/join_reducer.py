@@ -1,4 +1,4 @@
-# Path: code/mapReduce_join/join_reducer.py
+#! /usr/bin/python2
 
 import sys
 

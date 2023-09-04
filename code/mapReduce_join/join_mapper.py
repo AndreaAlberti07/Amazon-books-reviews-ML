@@ -1,10 +1,11 @@
-# Path: code/mapReduce_join/join_mapper.py
-
+#! /usr/bin/python2
 import sys
 
 for line in sys.stdin:
     columns = line.strip().split(',')
-
+    print(len(columns))
+    if (len(columns) > 10):
+        break
     # Check which table is being read
     if len(columns) == 9:  # 'Books Ratings' table
         title = columns[1]  # Extract the book title
