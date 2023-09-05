@@ -2,40 +2,57 @@
 
 import sys
 
-data_table = {}  # Create a dictionary for 'Books Data' table
-rating_table = {}  # Create a dictionary for 'Books Ratings' table
+# Create a dictionary for 'Books Data' table
+data_table = {}
 
+# Create a dictionary for 'Books Ratings' table
+rating_table = {}
+
+# Print header for the output CSV
 print('Title,description,authors,image,previewLink,publisher,publishedDate,infoLink,categories,ratingsCount,Price,User_id,profileName,review/helpfulness,review/score,review/time,review/summary,review/text\n')
+
+# Loop through lines from standard input (input from a MapReduce job)
 for line in sys.stdin:
+    # Split the input line into columns
     columns = line.strip().split('\t')
+
+    # Extract the source table identifier
     source = columns[-1]
     values = source.split(',')
     table = values[-1]
     values = values[:-1]
     key = columns[0]  # Assuming the book title is the join key
+
+    # Skip the header line
     if key == 'Title':
         continue
 
     if table == 'D':
+        # If the source is 'Books Data', store the data in the 'Books Data' dictionary
         book_data = values
-        data_table[key] = book_data  # Store data in the dictionary
+        data_table[key] = book_data
 
         # Check if the book title is in the 'Books Rating' dictionary
         if key in rating_table:
             rows = rating_table[key]
             for rating_data in rows:
                 # Join 'Books Data' and 'Books Ratings' data
-                joined_data = ','.join(data + rating_data)
+                joined_data = ','.join(book_data + rating_data)
                 print(f"{key},{joined_data}")
     else:
-        rating_data = values  # Remove the table identifier
+        # If the source is 'Books Ratings', remove the table identifier
+        rating_data = values
+
+        # Add rating data to the 'Books Ratings' dictionary, grouped by book title
         if key in rating_table:
             rating_table[key].append(rating_data)
         else:
             rating_table[key] = [rating_data]
+
         # Check if the book title is in the 'Books Data' dictionary
         if key in data_table:
             data = data_table[key]
+
             # Join 'Books Data' and 'Books Ratings' data
             joined_data = ','.join(data + rating_data)
             print(f"{key},{joined_data}")
