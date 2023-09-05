@@ -9,7 +9,7 @@ data_table = {}
 rating_table = {}
 
 # Print header for the output CSV
-print('Title,description,authors,image,previewLink,publisher,publishedDate,infoLink,categories,ratingsCount,Price,User_id,profileName,review/helpfulness,review/score,review/time,review/summary,review/text\n')
+print('Title,description,authors,publisher,publishedDate,categories,Price,User_id,profileName,review/helpfulness,review/score,review/time,review/summary,review/text\n')
 
 # Loop through lines from standard input (input from a MapReduce job)
 for line in sys.stdin:
@@ -19,17 +19,15 @@ for line in sys.stdin:
     # Extract the source table identifier
     source = columns[-1]
     values = source.split(',')
-    table = values[-1]
-    values = values[:-1]
     key = columns[0]  # Assuming the book title is the join key
 
     # Skip the header line
     if key == 'Title':
         continue
 
-    if table == 'D':
+    if len(values) == 5:
         # If the source is 'Books Data', store the data in the 'Books Data' dictionary
-        book_data = values
+        book_data = ','.join(values)
         data_table[key] = book_data
 
         # Check if the book title is in the 'Books Rating' dictionary
@@ -41,7 +39,7 @@ for line in sys.stdin:
                 print(f"{key},{joined_data}")
     else:
         # If the source is 'Books Ratings', remove the table identifier
-        rating_data = values
+        rating_data = ','.join(values)
 
         # Add rating data to the 'Books Ratings' dictionary, grouped by book title
         if key in rating_table:
