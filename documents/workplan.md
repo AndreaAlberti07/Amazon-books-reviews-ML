@@ -108,13 +108,15 @@ The chosen dataset is [Amazon Books Reviews](https://www.kaggle.com/datasets/moh
      - Extract the most useful words from the classifier.
      - Compute the mean helpfulness ratings for the most useful words.
 
-   - **Missing Values**:
-   - `review/text`: remove the entire sample
-   - `review/helpfulness`: remove the entire sample
+- **Missing Values**:
+  - `review/score`: remove the entire sample
+  - `review/text`: remove the entire sample
+  - `review/helpfulness`: remove the entire sample
 
-   - **Data Transformation**:
-   - `review/text`: Assign 1 to score (4, 5), 0 to score (1, 2). Create the BoW for the text. Fit a MNBC and count the number of positive and negative words. Graphical Plot.
-   - `review/helpfulness`: $helpfulness = \frac{x}{y} \sqrt(y)$
+- **Data Transformation**:
+  - `review/score`: Assign 1 to score (4, 5), 0 to score (1, 2). 
+  - `review/text`: Create the BoW for the text. Fit a MNBC and count the number of positive and negative words. Graphical Plot.
+  - `review/helpfulness`: $helpfulness = \frac{x}{y} \sqrt(y)$
 
    ***
 
@@ -129,14 +131,14 @@ The chosen dataset is [Amazon Books Reviews](https://www.kaggle.com/datasets/moh
      - Use the average book rating as the predictor variable and the helpfulness rating as the target variable.
      - Train a linear regression model to predict helpfulness ratings based on average book ratings.
 
-   - **Missing Values**:
+- **Missing Values**:
 
-     - `review/score`: remove the entire sample
-     - `review/helpfulness`: remove the entire sample
+  - `review/score`: remove the entire sample
+  - `review/helpfulness`: remove the entire sample
 
-   - **Data Transformation**:
-     - `review/score`: groupBy book title and calculate the average score.
-     - `review/helpfulness`: $helpfulness = \frac{x}{y} \sqrt(y)$
+- **Data Transformation**:
+  - `review/score`: groupBy book title and calculate the average score.
+  - `review/helpfulness`: $helpfulness = \frac{x}{y} \sqrt(y)$
 
    ***
 
@@ -152,14 +154,14 @@ The chosen dataset is [Amazon Books Reviews](https://www.kaggle.com/datasets/moh
      - Train a classification model to classify reviews as having detailed or vague summaries.
      - Compare the mean helpfulness ratings for reviews predicted as detailed vs. vague.
 
-   - **Missing Values**:
+- **Missing Values**:
 
-     - `review/summary`: set missing values as empty string
-     - `review/helpfulness`: remove the entire sample
+  - `review/summary`: set missing values as empty string
+  - `review/helpfulness`: remove the entire sample
 
-   - **Data Transformation**:
-     - `review/summary`: ...
-     - `review/helpfulness`: $helpfulness = \frac{x}{y} \sqrt(y)$
+- **Data Transformation**:
+  - `review/summary`: ...
+  - `review/helpfulness`: $helpfulness = \frac{x}{y} \sqrt(y)$
 
    ***
 
@@ -175,14 +177,14 @@ The chosen dataset is [Amazon Books Reviews](https://www.kaggle.com/datasets/moh
      - Train a classification model to predict whether a review will be helpful based on user-related features.
      - Compare the mean helpfulness ratings for reviews predicted as helpful by users with a history of high helpfulness vs. others.
 
-   - **Missing Values**:
+- **Missing Values**:
 
-     - `profileName`: Make a separate group for 'Anonymous' users.
-     - `review/helpfulness`: remove the entire sample
+  - `profileName`: Make a separate group for 'Anonymous' users.
+  - `review/helpfulness`: remove the entire sample
 
-   - **Data Transformation**:
-     - `profileName`: Transform the helpfulness. GroupBy profileName and average the helpfulness of the reviews.
-     - `review/helpfulness`: $helpfulness = \frac{x}{y} \sqrt(y)$
+- **Data Transformation**:
+  - `profileName`: Transform the helpfulness. GroupBy profileName and average the helpfulness of the reviews.
+  - `review/helpfulness`: $helpfulness = \frac{x}{y} \sqrt(y)$
 
    ***
 
@@ -197,14 +199,14 @@ The chosen dataset is [Amazon Books Reviews](https://www.kaggle.com/datasets/moh
      - Use the number of reviews as the predictor variable and the helpfulness rating as the target variable.
      - Train a linear regression model to predict helpfulness ratings based on the number of reviews.
 
-   - **Missing Values**:
+- **Missing Values**:
 
-     - `profileName`: Make a separate group for 'Anonymous' users.
-     - `review/helpfulness`: remove the entire sample
+  - `profileName`: Make a separate group for 'Anonymous' users.
+  - `review/helpfulness`: remove the entire sample
 
-   - **Data Transformation**:
-     - `profileName`: GroupBy profileName and count the reviews.
-     - `review/helpfulness`: $helpfulness = \frac{x}{y} \sqrt(y)$
+- **Data Transformation**:
+  - `profileName`: GroupBy profileName and count the reviews.
+  - `review/helpfulness`: $helpfulness = \frac{x}{y} \sqrt(y)$
 
 ---
 
