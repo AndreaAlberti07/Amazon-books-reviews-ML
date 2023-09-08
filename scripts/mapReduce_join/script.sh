@@ -6,10 +6,10 @@ MAPPER_SCRIPT="join_mapper.py"
 REDUCER_SCRIPT="join_reducer.py"
 
 # Specify the input data sources (CSV files to be processed)
-INPUT_FILES="hdfs://localhost:9900/user/book_reviews/books_data_cleaned_v2.csv,hdfs://localhost:9900/user/book_reviews/books_rating_cleaned_v2.csv"
-
+BOOKS_DATA="hdfs://localhost:9900/user/book_reviews/books_data_cleaned.csv"
+BOOKS_RATING="hdfs://localhost:9900/user/book_reviews/books_rating_cleaned.csv"
 # Specify the output directory where the job results will be stored
-OUTPUT_DIR="hdfs://localhost:9900/user/book_reviews/output"
+OUTPUT_DIR="hdfs://localhost:9900/user/book_reviews/joined_tables"
 
 # Run the Hadoop Streaming job
 hadoop jar $HADOOP_STREAMING_JAR \
@@ -19,5 +19,5 @@ hadoop jar $HADOOP_STREAMING_JAR \
 -files $MAPPER_SCRIPT,$REDUCER_SCRIPT \
 -mapper "$MAPPER_SCRIPT" \
 -reducer "$REDUCER_SCRIPT" \
--input $INPUT_FILES \
+-input $BOOKS_DATA,$BOOKS_RATING \
 -output $OUTPUT_DIR
