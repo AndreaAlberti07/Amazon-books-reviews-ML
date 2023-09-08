@@ -19,5 +19,5 @@ for line in sys.stdin:
 	else:
 		if fields[0] == title:
 			# Title, description, authors, publisher, publishedDate, categories, Price, User_id, profileName, review/helpfulness, review/score, review/time, review/summary, review/text
-			output = title + '\t' + '\t'.join(values) + '\t'+'\t'.join(fields[1:9])
+			output = title + '\t' + '\t'.join(values) + '\t'+'\t'.join(fields[2:9])
 			print(output)

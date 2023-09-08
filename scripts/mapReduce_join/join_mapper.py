@@ -14,7 +14,7 @@ for line in sys.stdin:
 	    # output = fields[0] + '\t-\t' + fields[1] + '\t-' * 8
 	if len(fields) == 9:
     	# Rating table
-		output = fields[0] + '\t' + '\t'.join(fields[1:]) + '\t-' * 5
+		output = fields[0] + '\t' + 'www' + '\t' + '\t'.join(fields[1:]) + '\t-' * 5
 		# output = fields[0] + '\t' + fields[1] + '\t-\t' + '\t'.join(fields[2:])
 	
 	print(output)
