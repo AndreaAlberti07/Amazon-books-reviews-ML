@@ -6,7 +6,7 @@ for line in sys.stdin:
 	# Remove leading and trailing whitespace
 	line = line.strip()
 	# Get the fields
-	fields = line.split(',')
+	fields = line.split('\t')
 	
 	if len(fields) == 6:
 	    # Data table
