@@ -208,7 +208,7 @@ The chosen dataset is [Amazon Books Reviews](https://www.kaggle.com/datasets/moh
   - `profileName`: GroupBy profileName and count the reviews.
   - `review/helpfulness`: $helpfulness = \frac{x}{y} \sqrt(y)$
 
-7. **_Hypothesis_**: No publisher are able to get high scores (> 4.5) in more than 10 categories.
+7. **_Hypothesis_**: Publishers are very specialized, so no publisher are able to get high scores (> 4.5) in more than 10 categories.
 
    - **Metric**: N. of times a publisher gets a score > 4.5 in different categories.
 
