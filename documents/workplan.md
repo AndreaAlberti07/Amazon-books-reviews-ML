@@ -208,6 +208,27 @@ The chosen dataset is [Amazon Books Reviews](https://www.kaggle.com/datasets/moh
   - `profileName`: GroupBy profileName and count the reviews.
   - `review/helpfulness`: $helpfulness = \frac{x}{y} \sqrt(y)$
 
+7. **_Hypothesis_**: There are some publisher getting higher average review/score.
+
+   - **Metric**: Compare the mean review/score of the books published by the same publisher.
+
+   - **Model**: Linear Regression.
+
+   - **Description**:
+   
+     - Add a column for each publisher's average review/score.
+     - Use the average review/score as the predictor variable and the helpfulness rating as the target variable.
+     - Train a linear regression model to predict helpfulness ratings based on the average review/score.
+
+- **Missing Values**:
+  
+    - `publisher`: set missing values as empty string
+    - `review/score`: remove the entire sample
+
+- **Data Transformation**:
+    - `publisher`: GroupBy publisher.
+    - `review/score`: Compute the average review/score for each publisher.
+
 ---
 
 ## 2. DATA PREPARATION
