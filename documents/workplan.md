@@ -87,10 +87,12 @@ The chosen dataset is [Amazon Books Reviews](https://www.kaggle.com/datasets/moh
      - The correlation coefficient can also be calculated as a post-processing step.
 
 - **Missing Values**:
+
   - `review/text`: set missing values as empty string
   - `review/helpfulness`: remove the entire sample
 
 - **Data Transformation**:
+
   - `review/text`: ...
   - `review/helpfulness`: $helpfulness = \frac{x}{y} \sqrt(y)$
 
@@ -109,16 +111,18 @@ The chosen dataset is [Amazon Books Reviews](https://www.kaggle.com/datasets/moh
      - Compute the mean helpfulness ratings for the most useful words.
 
 - **Missing Values**:
+
   - `review/score`: remove the entire sample
   - `review/text`: remove the entire sample
   - `review/helpfulness`: remove the entire sample
 
 - **Data Transformation**:
-  - `review/score`: Assign 1 to score (4, 5), 0 to score (1, 2). 
+
+  - `review/score`: Assign 1 to score (4, 5), 0 to score (1, 2).
   - `review/text`: Create the BoW for the text. Fit a MNBC and count the number of positive and negative words. Graphical Plot.
   - `review/helpfulness`: $helpfulness = \frac{x}{y} \sqrt(y)$
 
-   ***
+    ***
 
 3. **_Hypothesis_**: Reviews with higher average book ratings have higher helpfulness ratings.
 
@@ -137,94 +141,65 @@ The chosen dataset is [Amazon Books Reviews](https://www.kaggle.com/datasets/moh
   - `review/helpfulness`: remove the entire sample
 
 - **Data Transformation**:
+
   - `review/score`: groupBy book title and calculate the average score.
   - `review/helpfulness`: $helpfulness = \frac{x}{y} \sqrt(y)$
 
-   ***
+    ***
 
-4. **_Hypothesis_**: Reviews with more specific and descriptive summaries are perceived as more helpful.
+4. **_Hypothesis_**:There are users that are more likely to badly rate a book, especially the unknowns
 
-   - **Metric**: Compare the mean helpfulness ratings of reviews with detailed summaries against those with vague summaries.
+   - **Metric**: Rating score
 
-   - **Model**: NLP methods.
-
-   - **Description**:
-
-     - Convert the review summaries into numerical features using techniques like TF-IDF or word embeddings.
-     - Train a classification model to classify reviews as having detailed or vague summaries.
-     - Compare the mean helpfulness ratings for reviews predicted as detailed vs. vague.
-
-- **Missing Values**:
-
-  - `review/summary`: set missing values as empty string
-  - `review/helpfulness`: remove the entire sample
-
-- **Data Transformation**:
-  - `review/summary`: ...
-  - `review/helpfulness`: $helpfulness = \frac{x}{y} \sqrt(y)$
-
-   ***
-
-5. **_Hypothesis_**: Reviews written by users with a history of providing helpful reviews receive higher helpfulness ratings.
-
-   - **Metric**: Compare the mean helpfulness ratings for reviews by users with a history of high helpfulness ratings against those without such a history.
-
-   - **Model**: User-based Features and Classification.
+   - **Model**: Linear regression
 
    - **Description**:
 
-     - Aggregate user-level statistics (e.g., average helpfulness ratings of their previous reviews).
-     - Train a classification model to predict whether a review will be helpful based on user-related features.
-     - Compare the mean helpfulness ratings for reviews predicted as helpful by users with a history of high helpfulness vs. others.
-
 - **Missing Values**:
 
-  - `profileName`: Make a separate group for 'Anonymous' users.
-  - `review/helpfulness`: remove the entire sample
+  - `username`: set missing values as unknown
+  - `review/score`: remove the entire sample
 
 - **Data Transformation**:
-  - `profileName`: Transform the helpfulness. GroupBy profileName and average the helpfulness of the reviews.
-  - `review/helpfulness`: $helpfulness = \frac{x}{y} \sqrt(y)$
 
-   ***
+  ***
 
-6. **_Hypothesis_**: There is a relationship between the number of reviews of a specific user and the helpfulness of his reviews.
+5. **_Hypothesis_**: The popularity of a category depends on the publishing date
 
-   - **Metric**: Correlation between the number of reviews of a specific user and the helpfulness of his reviews.
-   - **Model**: Linear Regression.
+   - **Metric**: Popularity: average review/score
+
+   - **Model**:Polynomial regression
 
    - **Description**:
 
-     - Add a column for each user's number of reviews.
-     - Use the number of reviews as the predictor variable and the helpfulness rating as the target variable.
-     - Train a linear regression model to predict helpfulness ratings based on the number of reviews.
-
 - **Missing Values**:
 
-  - `profileName`: Make a separate group for 'Anonymous' users.
-  - `review/helpfulness`: remove the entire sample
+  - `publishedDate`: remove the entire sample
+  - `category`: remove the entire sample
+  - `review/score`: remove the entire sample
 
 - **Data Transformation**:
-  - `profileName`: GroupBy profileName and count the reviews.
-  - `review/helpfulness`: $helpfulness = \frac{x}{y} \sqrt(y)$
 
-7. **_Hypothesis_**: Publishers are very specialized, so no publisher are able to get high scores (> 4.5) in more than 10 categories.
+  ***
 
-   - **Metric**: N. of times a publisher gets a score > 4.5 in different categories.
+6. **_Hypothesis_**: The larger the number of books published for a category, the higher the review score.(marketing strategy, the publishers tend to publish books of the most liked category)  
+    The larger the number of books published by publishers, the higher the review score (books published by the most famous publishers are preferred)
+
+   - **Metric**: correlation coefficients, Kolmogorov-Smirnov, Chi-Square, Wilcoxon (for future normalization)
 
    - **Model**: None
 
 - **Missing Values**:
-  
-    - `publisher`: remove the entire sample
-    - `review/score`: remove the entire sample
-    - `categories`: remove the entire sample
+
+  - `publisher`: remove the entire sample
+  - `review/score`: remove the entire sample
+  - `categories`: remove the entire sample
 
 - **Data Transformation**:
 
-    - `categories`: GroupBy categories.
-    - `publisher`: GroupBy publisher.
-    - `review/score`: Compute the average review/score for each publisher.
+  - `categories`: GroupBy categories.
+  - `publisher`: GroupBy publisher.
+  - `review/score`: Compute the average review/score for each publisher and category.
 
 ---
 
