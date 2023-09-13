@@ -157,7 +157,7 @@ The chosen dataset is [Amazon Books Reviews](https://www.kaggle.com/datasets/moh
 
 - **Missing Values**:
 
-  - `username`: set missing values as unknown
+  - `profileName`: set missing values as unknown
   - `review/score`: remove the entire sample
 
 - **Data Transformation**:
