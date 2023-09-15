@@ -147,7 +147,7 @@ The chosen dataset is [Amazon Books Reviews](https://www.kaggle.com/datasets/moh
 
     ***
 
-4. **_Hypothesis_**:There are users that are more likely to badly rate a book, especially the unknowns
+4. **_Hypothesis_**: The rating score is influenced by individual users, whose unique personalities and personal preferences may lead them to either overestimate or underestimate a book's quality. In addition, the Anonymous tends to overrate the books
 
    - **Metric**: Rating score
 
@@ -164,7 +164,7 @@ The chosen dataset is [Amazon Books Reviews](https://www.kaggle.com/datasets/moh
 
   ***
 
-5. **_Hypothesis_**: The popularity of a category depends on the publishing date
+1. **_Hypothesis_**: The popularity of a category is influenced by the published date.
 
    - **Metric**: Popularity: average review/score
 
