@@ -147,7 +147,7 @@ The chosen dataset is [Amazon Books Reviews](https://www.kaggle.com/datasets/moh
 
     ***
 
-4. **_Hypothesis_**:There are users that are more likely to badly rate a book, especially the unknowns
+4. **_Hypothesis_**: The rating score is influenced by individual users, whose unique personalities and personal preferences may lead them to either overestimate or underestimate a book's quality. In addition, the Anonymous tends to overrate the books
 
    - **Metric**: Rating score
 
@@ -157,16 +157,16 @@ The chosen dataset is [Amazon Books Reviews](https://www.kaggle.com/datasets/moh
 
 - **Missing Values**:
 
-  - `username`: set missing values as unknown
+  - `profileName`: set missing values as unknown
   - `review/score`: remove the entire sample
 
 - **Data Transformation**:
 
   ***
 
-5. **_Hypothesis_**: The popularity of a category depends on the publishing date
+5. **_Hypothesis_**:The review/score is influenced by the category of the book
 
-   - **Metric**: Popularity: average review/score
+   - **Metric**: average review/score
 
    - **Model**:Polynomial regression
 
