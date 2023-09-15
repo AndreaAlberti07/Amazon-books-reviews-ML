@@ -164,9 +164,9 @@ The chosen dataset is [Amazon Books Reviews](https://www.kaggle.com/datasets/moh
 
   ***
 
-1. **_Hypothesis_**: The popularity of a category is influenced by the published date.
+5. **_Hypothesis_**:The review/score is influenced by the category of the book
 
-   - **Metric**: Popularity: average review/score
+   - **Metric**: average review/score
 
    - **Model**:Polynomial regression
 
