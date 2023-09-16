@@ -1,8 +1,7 @@
 # Things to do :
 
 - [ ] Fix errors on mapReduce task
-- [ ] Test hypotheses 1, 2 on MongoDB
-- [ ] Test hypotheses on Spark
+- [ ] Test hypotheses 2 on MongoDB and Spark
 - [ ] Complete the ML model
 - [ ] Presentation
 - [ ] Report
