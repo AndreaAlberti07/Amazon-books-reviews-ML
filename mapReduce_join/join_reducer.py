@@ -3,23 +3,30 @@
 
 import sys
 
-title = None
-values = None
+current_key = None
+data_values = []
+rating_values = []
 
 for line in sys.stdin:
-    # remove leading and trailing whitespace
+    # Remove leading and trailing whitespace
     line = line.strip()
-    # parse the input from mapper.py
+    # Parse the input from mapper.py
     fields = line.split('\t')
 
+    key = fields[0]
     if fields[1] == '-':
-        # Save the title and genre of a movie
-        title = fields[0]
-        values = fields[10:]
+        # Data table record
+        data_values = fields[2:]
     else:
-        if fields[0] == title:
-            # Title, description, authors, publisher, publishedDate, categories, Price, User_id, profileName,
-            # review/score, review/time, review/summary, review/text, N_helpful, Tot_votes
-            output = title + '\t' + \
-                '\t'.join(values) + '\t'+'\t'.join(fields[2:11])
+        # Rating table record
+        rating_values = fields[2:]
+
+    # Check if the key has changed (new record)
+    if current_key != key:
+        current_key = key
+    else:
+        # Emit the joined record when both data and rating values are available
+        if data_values and rating_values:
+            output = current_key + '\t' + \
+                '\t'.join(data_values) + '\t' + '\t'.join(rating_values)
             print(output)
