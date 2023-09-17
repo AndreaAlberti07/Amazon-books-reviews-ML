@@ -47,3 +47,37 @@ We've formulated several hypotheses, including:
 
 4. **Reporting**:
    - Generate reports and insights.
+
+## Repository Structure
+
+This repository is organized into the following folders, each serving a specific purpose:
+
+- **Documents :**
+  Contains general documents used for synchronizing activities among team members. You can find meeting notes, project timelines, and any other relevant files here.
+
+- **MapReduce Join :**
+  Contains the scripts for MapReduce operations, including mapper and reducer scripts. These scripts are used for data processing tasks within the project.
+
+- **Notebooks :**
+  This folder is further organized into subfolders, each dedicated to a specific aspect of the project:
+
+  - **Hypotheses Testing :**
+    Contains Jupyter notebooks used for testing and analyzing hypotheses related to the project. You'll find code and documentation for hypothesis testing here.
+
+  - **Model :**
+    Contains Jupyter notebooks used for feature extraction, model training, and evaluating the predictive capabilities of our models. This is where the core data analysis and machine learning work happens.
+
+  - **MongoDB :**
+    Holds Jupyter notebooks related to exporting a subset of data to MongoDB. This may include data migration and integration tasks.
+
+  - **Spark :**
+    It is dedicated to Jupyter notebooks for preliminary data analysis, data cleaning, and testing various hypotheses on the complete dataset using Apache Spark.
+
+- **Report :**
+  Contains LaTeX files for creating the project report. This is where you can find the documentation and presentation materials summarizing our project's goals, methodology, findings, and conclusions.
+
+## Contact
+
+If you have any questions or need further information about this project, please feel free to contact us
+
+Thank you for your interest in this image recognition project!
