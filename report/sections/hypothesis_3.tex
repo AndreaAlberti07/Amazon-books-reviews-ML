@@ -1,20 +1,7 @@
 \subsection*{Hypothesis 3}
 
 Reviews with higher book rating have higher helpfulness ratings.\\
-\noindent
-\textbf{Metric:} Correlation coefficient (e.g., Pearson's correlation) between review rating and helpfulness score.\\
-\noindent
-\textbf{Missing Values:}
-\begin{itemize}
-    \item \textit{`review/score`:} remove the entire sample
-    \item \textit{`review/helpfulness`:} remove the entire sample
-\end{itemize}
-\noindent
-\textbf{Data Transformation:}
-\begin{itemize}
-    \item \textit{`review/score`:} no operations required
-    \item \textit{`review/helpfulness`:} $helpfulness = \frac{x}{y} \sqrt(y)$
-\end{itemize}\vspace{0.5cm}
+
 \noindent
 \textbf{Description and Results}
 As in the previous hypothesis, we decided to deal with missing values and data transformation directly with a MongoDB query. With the data ready to

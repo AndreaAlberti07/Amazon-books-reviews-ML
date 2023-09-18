@@ -1,0 +1,15 @@
+\subsection*{MongoDB loading}
+Once all the previous operations were completed, we loaded the data into MongoDB. To do so the steps 
+executed are:
+
+\begin{itemize}[leftmargin=*, noitemsep]
+\item Connect to MongoDB using \textit{`pymongo`}
+\item Connect to HDFS and read the data using \textit{`spark.read.csv`}
+\item Select a subset of the Spark DataFrame to import using \textit{`sample`} method
+\item Transform the data into a dictionary using \textit{`to\_dict`} method
+\item Insert the data into MongoDB using \textit{`insert\_many`} method
+\end{itemize}
+
+\noindent
+We loaded in MongoDB the two tables \textit{ratings} and \textit{books\_info}, together with the joined table produced
+by MapReduce. These data have been used to perform the local hypotheses testing described below.

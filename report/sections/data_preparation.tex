@@ -1,0 +1,45 @@
+\section{Data Preparation}
+To start with the project, we needed to retrieve and prepare the data.
+
+\subsection*{Data Retrieval and Prior Analysis}
+The chosen dataset is composed by 2 tables and about 3 million reviews, accessible at the following link:
+\href{https://www.kaggle.com/datasets/mohamedbakhet/amazon-books-reviews}{Amazon Books Reviews}. \\
+Once the dataset has been acquired we performed the following steps:\\
+1. \textbf{HDFS loading} using the following commands:
+\lstset{
+    basicstyle=\ttfamily,
+    frame=single,
+    breaklines=true
+}
+\begin{lstlisting}[language=bash]
+
+# Create HDFS directories
+hdfs dfs -mkdir -p "$HDFS_PATH/ratings"
+hdfs dfs -mkdir -p "$HDFS_PATH/books_info"
+
+# Copy local files to HDFS
+hdfs dfs -copyFromLocal "$LOCAL_PATH/ratings.csv" "$HDFS_PATH/ratings/"
+hdfs dfs -copyFromLocal "$LOCAL_PATH/books_info.csv" "$HDFS_PATH/books_info/"
+\end{lstlisting}
+
+\noindent
+2. \textbf{Prior analysis} using \textit{pyspark} to get a better understanding of the data. In this phase
+we defined a schema for our data and we computed some statistics together with the percentage of missing values and
+unique values for each field or our dataset.
+
+\subsection*{Hypothesis Generation}
+After the prior analysis, we started to think about some hypotheses that we could test on our data. We came up with
+the following ones:
+
+\begin{itemize}[leftmargin=*, noitemsep]
+\item \textbf{H1}: Reviews with longer text have higher helpfulness ratings.
+\item \textbf{H2}: Reviews with more positive sentiment words receive higher helpfulness ratings.
+\item \textbf{H3}: Reviews with higher book ratings have higher helpfulness ratings.
+\item \textbf{H4}: The rating score is influenced by individual users, which may either overestimate or underestimate a book's quality. Anonymous tends to overrate the books.
+\item \textbf{H5}: The review score is influenced by the category of the book.
+\item \textbf{H6}: The larger the number of books published for a category or publisher, the higher the review score.
+\end{itemize}
+
+\subsection*{Data Cleaning}
+In this step we cleaned the data, removing duplicates, useless columns for our analysis and any symbol that could
+have interfered with the reading of the csv files. All the cleaning operations were performed using \textit{pyspark}.
