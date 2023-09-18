@@ -1,0 +1,31 @@
+\section{Spark Hypotheses Testing}
+To show the possibility of implementing the data analysis in a Big Data context, we decided to replicate some hypotheses
+testing using Spark. In particular, we focused on the hypotheses 1 and 3.
+
+\subsection*{Hypothesis 1}
+This hypothesis required three things:
+
+\begin{itemize}[leftmargin=*, noitemsep]
+\item \textbf{Compute the helpfulness score:}
+That was simply achieved exploiting the \textit{WithColumn} method of the Spark DataFrame, creating a new column with the new values.
+
+\item \textbf{Compute the text length:}
+This was achieved using \textit{regexp\_replace} to remove punctuations, \textit{Tokenizer and StopWordsRemover} to tokenize the 
+text and remove the stop words. Finally a new column with the length of the text was created.
+
+\item \textbf{Bucketize the text length:}
+This issue was solved exploiting the \textit{Bucketizer} class of Spark MLlib together with a UDF to assign
+a proper label to the classes.
+
+\item \textbf{Compute the correlation coefficient:}
+Finally the correlation coefficient was computed using the \textit{Correlation.corr} method of the Spark MLlib, since
+we needed the Spearman correlation coefficient. The data were reshaped to match the required format using \textit{VectorAssembler}.
+
+\end{itemize}
+
+\subsection*{Hypothesis 3}
+This hypothesis required just to compute the helpfulness score and the correlation coefficient. Both of them were computed
+using the same methods described in the previous hypothesis. 
+
+\subsection*{Results}
+For both the tested cases, the results were almost the same as the ones obtained in the local environment.
