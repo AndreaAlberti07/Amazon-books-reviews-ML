@@ -1,0 +1,95 @@
+%% Complex MongoDB query to answer: In which categories are the best publishers focused?
+
+\section{Python Script}
+\vspace{0.5cm}
+This is the script to answer the question: In which categories are the best publishers focused?\\
+\lstset{
+    language=Python,
+    basicstyle=\footnotesize\ttfamily,
+    numbers=left,
+    numberstyle=\tiny,
+    numbersep=5pt
+}
+
+\begin{lstlisting}
+# Deal with missing values
+pipeline_missing = {'$match': {
+    'review/score': {'$exists': True, '$ne': 0},
+    'publisher': {'$exists': True, '$ne': None},
+    'categories': {'$exists': True},
+}
+}
+
+# Compute average rating for each tuple category, publisher
+pipeline_average_rating = {'$group': {
+    '_id': {
+        'category': '$categories',
+        'publisher': '$publisher',
+    },
+    'avg_score': {'$avg': '$review/score'},
+    'count': {'$sum': 1}
+}
+}
+
+# Show average rating for category for each publisher
+pipeline_publisher = {'$group': {
+    '_id': '$_id.category',
+    'avg_score/publisher': {
+        '$push': {
+            'publisher': '$_id.publisher',
+            'avg_score': '$avg_score',
+            'count': '$count'
+        }
+    }
+}
+}
+
+# Unwind the list of categories
+pipeline_unwind = {'$unwind': '$avg_score/publisher'}
+
+# Remove categories or publisher with less than 'threshold' reviews
+threshold = 0
+pipeline_remove = {'$match': {
+    'avg_score/publisher.count': {'$gte': threshold}
+}
+}
+
+# Count the number of categories with average rating > 4.5
+pipeline_counts = {'$project': {
+    'category': '$_id',
+    '_id': 0,
+    'publisher': '$avg_score/publisher.publisher',
+    'count': {
+        '$sum': {
+            '$cond': {
+
+                'if': {'$gt': ['$avg_score/publisher.avg_score', 4.5]},
+                'then': 1,
+                'else': 0
+            }
+        }
+    }
+}
+}
+
+# Sum the results for each publisher. If Total > 10, then the hypothesis is False
+pipeline_sum = {'$group': {
+    '_id': '$category',
+    'total': {'$sum': '$count'}
+}
+}
+
+pipeline_sort = {'$sort': {
+    'total': -1
+}
+}
+
+results = books.aggregate([pipeline_missing, pipeline_average_rating, pipeline_publisher,
+                          pipeline_unwind, pipeline_remove, pipeline_counts,
+                          pipeline_sum, pipeline_sort])
+\end{lstlisting}
+
+
+
+
+    
