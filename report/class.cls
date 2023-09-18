@@ -10,7 +10,7 @@
 \DeclareOption{blind}{\@isblindtrue}
 
 \ProcessOptions\relax
-\LoadClass[twoside,a4paper,7pt,twocolumn,english]{article}
+\LoadClass[twoside,a4paper,10pt,twocolumn,english]{article}
 
 
 
