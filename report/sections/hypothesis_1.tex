@@ -1,10 +1,8 @@
 \subsection*{Hypothesis 1}
 
-Reviews with longer text have higher helpfulness ratings.\\
+\textbf{H0 (Null Hypothesis):} There is a positive correlation between the length of a review and its helpfulness score.\\
 
-\noindent
-\textbf{Description and Results}
-The data cleaning and 'review/helpfulness' transformation process ($helpfulness = \frac{x}{y} \sqrt(y)$) was performed using the \textit{`pymongo`} library to exploit the 
+The data cleaning and 'review/helpfulness' transformation process ($helpfulness score = \frac{x}{y} \sqrt(y)$) was performed using the \textit{`pymongo`} library to exploit the 
 MongoDB efficiency. Specifically, we defined a pipeline to perform the needed operations. As regards the 
 'review/text' transformation, we used the \textit{`nltk`} library to tokenize the text, remove punctuation, stopwords and eventually
 count the number of words.\\
@@ -23,6 +21,7 @@ for the reviews with length greater than 750 words. As regards the reviews in th
 \end{figure}
 
 \begin{table}[H]
+    \footnotesize
     \centering
     \caption{Correlation Coefficients and P-values for Different Groups}
     \begin{tabular}{|c|c|c|}

@@ -5,7 +5,7 @@ Then we tried different models, in order to find the one that best fits our need
 
 \subsection{Feature Extraction}
 Seen the complexity of the problem we decided to use a \textit{Word Embedding} technique, called \textit{Word2Vec}, that is able to convert a word in a vector of real numbers
-while preserving the semantic meaning of the word itself. We used the \textit{Gensim} library to perform this task using the following parameters:
+while preserving the semantic meaning of the word itself. We used the \textit{Gensim} library to perform this task using the following parameters for the model:
 \begin{itemize}[noitemsep, leftmargin=*]
     \item \textbf{Size}: 30
     \item \textbf{Window}: 5
@@ -47,11 +47,16 @@ The results are show in Table \ref{tab:model_results} and supported by Figure \r
 As we can see from the graph and the metrics used, the Random Forest model outperforms the other models in terms of Mean Squared Error 
 (MSE) and Root Mean Squared Error (RMSE). The Random Forest model achieved the lowest MSE of approximately 0.026 and RMSE of approximately 
 0.161, indicating that its predictions are, on average, the closest to the actual values. 
-This suggests that Random Forest has the best overall predictive performance among the three models.
+This suggests that Random Forest has the best overall predictive performance among the three models.\\
+To further improve the performance of the model, we tried for the best one only to increase the number of features from 30 to 150. However,
+the performance improvement was not significant, thereby we decided to keep the number of features to 30 since it strikes the best balance
+between performance and computational cost.
 
 \subsection{Results Interpretation}
-Figure \ref{fig:model_best_scatter} and Figure \ref{fig:model_best_lines} help us in the results Interpretation.
-
+Figure \ref{fig:model_best_scatter} and Figure \ref{fig:model_best_lines} help us in the results Interpretation. The scatter plot
+provides a visual representation of the errors distribution, showing that the model tends to overestimate the helpfulness of the reviews when 
+these latter have a high helpfulness while it underestimates when the helpfulness is low. A throughout analysis of the causes of this behavior
+is on top of our future work.\\
 
 \begin{figure}[H]
     \centering
@@ -60,6 +65,11 @@ Figure \ref{fig:model_best_scatter} and Figure \ref{fig:model_best_lines} help u
     \label{fig:model_best_scatter}
 \end{figure}
 
+\noindent
+The line plot instead, helps in understanding the meaning of given helpfulness score, translating it into Total Votes and Helpfulness Votes.
+The blue line represents the couple of values (Total Votes, Helpfulness Votes) leading to an helpfulness score closer to 0.8, while the red and green lines
+represent the values corresponding to an helpfulness score of 0.8 plus or minus the RMSE. For example on a base of 100 Total Votes, the RMSE of 
+our model corresponds to an excess or defect of roughly 13 votes.\\
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.48\textwidth]{./figures/model_best_lines.png}

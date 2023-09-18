@@ -1,10 +1,6 @@
 \subsection*{Hypothesis 6}
 
-- The larger the number of books published for a category, the higher the review score.\\ 
-- The larger the number of books published by publishers, the higher the review score.\\
-
-\noindent
-\textbf{Description and Results}
+\textbf{H0 (Null Hypothesis):} There is no correlation between the number of books published for a category (or publisher) and the review score.\\
 All the data cleaning and transformation steps were performed using MongoDB with the aggregation pipeline, to have a more efficient and faster computation.\\
 Specifically the data cleaning steps were performed using the \textit{\$match} operator, while the data transformation steps were performed using the \textit{\$group} operator with \textit{\$avg} operation.
 Finally a \textit{\$project} operator was used to select the fields of interest. To reduce bias, we removed the categories having less than 50 books and the publishers having less than 20 books.\\
