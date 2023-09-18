@@ -2,10 +2,10 @@
 
 - [x] Fix errors on mapReduce task
 - [ ] Test hypotheses 2 on MongoDB and Spark
-- [ ] Complete the ML model
+- [x] Complete the ML model
 - [ ] Presentation
 - [ ] Report
-- [ ] Check mandatory tasks
+- [x] Check mandatory tasks
 
 Plan:
 
