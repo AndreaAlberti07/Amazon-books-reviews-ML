@@ -1,13 +1,16 @@
 \subsection*{Hypothesis 6}
 
 \textbf{H0 (Null Hypothesis):} There is no correlation between the number of books published for a category (or publisher) and the review score.\\
-All the data cleaning and transformation steps were performed using MongoDB with the aggregation pipeline, to have a more efficient and faster computation.\\
-Specifically the data cleaning steps were performed using the \textit{\$match} operator, while the data transformation steps were performed using the \textit{\$group} operator with \textit{\$avg} operation.
-Finally a \textit{\$project} operator was used to select the fields of interest. To reduce bias, we removed the categories having less than 50 books and the publishers having less than 20 books.\\
-The results are shown in Table \ref{tab:h6_correlations}.\\
-\textbf{Conclusion:} The hypotheses are falsified since the metrics shows no correlation between the two variables in both cases.
+All data cleaning and transformation steps were executed using MongoDB's aggregation pipeline to ensure efficient and rapid computation. 
+Specifically, data cleaning involved the use of the \textit{\$match} operator, while data transformation steps were carried out with 
+the \textit{\$group} operator, utilizing the \textit{\$avg} operation. Finally, the \textit{\$project} operator was applied to select 
+the relevant fields. To reduce bias, we excluded categories with fewer than 50 books and publishers with fewer than 20 books.
+The results are presented in Table \ref{tab:h6_correlations}.\\
+\textbf{Conclusion:} The hypotheses are rejected as the metrics reveal no significant correlation between the number of books published 
+for a category (or publisher) and the review score in both cases.
 
 \begin{table}[H]
+    \footnotesize
     \centering
     \caption{Correlation Values and P-values for Categories and Publishers}
     \begin{tabular}{|c|c|c|}
@@ -22,27 +25,26 @@ The results are shown in Table \ref{tab:h6_correlations}.\\
     \label{tab:h6_correlations}
 \end{table}
 
-\vspace{0.5cm}
-\noindent 
-\textbf{Curiosity}
-We performed two complex MongoDB queries (reported as example in section 'Code') to answer to two questions:\\
-\begin{itemize}
-    \item Which are the best publishers? (i.e. capable of getting avg scores above 4.5 in lots of categories)
-    \item In which categories are the best publishers focused?
+\textbf{Curiosity:}
+We executed two complex MongoDB queries to answer two intriguing questions:
+
+\begin{itemize}[leftmargin=*, noitemsep]
+    \item \textbf{Which are the best publishers?} (i.e., those capable of achieving average scores above 4.5 in multiple categories)
+    \item \textbf{In which categories are the best publishers focused?}
 \end{itemize}
 
-The results are reported in Figure \ref{fig:h6_which_best} and Figure \ref{fig:h6_where_best}.
+The results of these queries are presented in Figure \ref{fig:h6_which_best} and Figure \ref{fig:h6_where_best}.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{./figures/h6_which_best.png}
-    \caption{Which are the best publishers?}
+    \caption{Identifying the Best Publishers}
     \label{fig:h6_which_best}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{./figures/h6_where_best.png}
-    \caption{In which categories are the best publishers focused?}
+    \caption{Categories Favored by the Best Publishers}
     \label{fig:h6_where_best}
 \end{figure}

@@ -1,24 +1,26 @@
 \section{Helpfulness Prediction}
-Our ambitious goal was that of building a model able to predict the helpfulness of a review, looking only at the text of the review itself.
-To create such a model, we needed firstly to convert the text in a machine-readable format, performing a process called \textit{feature extraction}.
-Then we tried different models, in order to find the one that best fits our needs eventually selecting the best one.
+Our ambitious objective was to build a model capable of predicting the helpfulness of a review based solely on the review text. 
+To create such a model, we first needed to convert the text into a machine-readable format, a process known as \textit{feature extraction}. 
+Subsequently, we explored different models to identify the one best suited for our needs, ultimately selecting the most appropriate one.
 
 \subsection{Feature Extraction}
-Seen the complexity of the problem we decided to use a \textit{Word Embedding} technique, called \textit{Word2Vec}, that is able to convert a word in a vector of real numbers
-while preserving the semantic meaning of the word itself. We used the \textit{Gensim} library to perform this task using the following parameters for the model:
+Given the complexity of the problem, we opted to employ a \textit{Word Embedding} technique called \textit{Word2Vec}, which converts words into 
+vectors of real numbers while preserving their semantic meaning. We utilized the \textit{Gensim} library to perform this task, using the 
+following parameters for the model:
 \begin{itemize}[noitemsep, leftmargin=*]
     \item \textbf{Size}: 30
     \item \textbf{Window}: 5
     \item \textbf{Min Count}: 2
     \item \textbf{Workers}: -1
 \end{itemize}
-As a consequence, each word is represented by a vector of 30 real numbers. The average of the vectors of all the words in a review is the vector representation of the review.
+Consequently, each word is represented by a 30-dimensional vector, and the average of these vectors for all words in a review forms the vector 
+representation of the review.
 
 \subsection{Models}
-We tried three different models: \textit{Random Forest}, \textit{Support Vector Regressor (RBF kernel)} and \textit{MLP}.
-We used the \textit{Scikit-Learn} library to perform the training and the testing of the models. Specifically for this last step
-we used the \textit{GridSearchCV} class, that performs a cross-validation on the training set, in order to find the best parameters for the model.
-The results are show in Table \ref{tab:model_results} and supported by Figure \ref{fig:model_results}.
+We evaluated three different models:\textit{Random Forest},\textit{Support Vector Regressor (RBF kernel)}, and\textit{Multi-Layer Perceptron (MLP)}. 
+We employed the\textit{Scikit-Learn} library for model training and testing, utilizing the\textit{GridSearchCV} class to perform cross-validation on 
+the training set to identify the best model parameters. The results are presented in Table \ref{tab:model_results} and visualized in Figure 
+\ref{fig:model_results}.
 
 \begin{table}[H]
     \footnotesize
@@ -44,38 +46,38 @@ The results are show in Table \ref{tab:model_results} and supported by Figure \r
 \end{figure}
 
 \noindent
-As we can see from the graph and the metrics used, the Random Forest model outperforms the other models in terms of Mean Squared Error 
-(MSE) and Root Mean Squared Error (RMSE). The Random Forest model achieved the lowest MSE of approximately 0.026 and RMSE of approximately 
-0.161, indicating that its predictions are, on average, the closest to the actual values. 
-This suggests that Random Forest has the best overall predictive performance among the three models.\\
-To further improve the performance of the model, we tried for the best one only to increase the number of features from 30 to 150. However,
-the performance improvement was not significant, thereby we decided to keep the number of features to 30 since it strikes the best balance
-between performance and computational cost.
+The results and metrics used indicate that the \textit{Random Forest} model outperforms the others in terms of Mean Squared Error (MSE) 
+and Root Mean Squared Error (RMSE). The Random Forest model achieved the lowest MSE of approximately 0.026 and RMSE of approximately 0.161, 
+suggesting that its predictions are the closest, on average, to the actual values. This implies that the Random Forest model offers the 
+best overall predictive performance among the three models. To further enhance model performance, we experimented with increasing the 
+number of features from 30 to 150. However, the performance improvement was not substantial, so we chose to retain 30 features due to the 
+optimal balance between performance and computational cost.
 
 \subsection{Results Interpretation}
-Figure \ref{fig:model_best_scatter} and Figure \ref{fig:model_best_lines} help us in the results Interpretation. The scatter plot
-provides a visual representation of the errors distribution, showing that the model tends to overestimate the helpfulness of the reviews when 
-these latter have a high helpfulness while it underestimates when the helpfulness is low. A throughout analysis of the causes of this behavior
-is on top of our future work.\\
+Figures \ref{fig:model_best_scatter} and \ref{fig:model_best_lines} aid in interpreting the results. The scatter plot visually represents 
+the distribution of errors, revealing that the model tends to overestimate the helpfulness of reviews with high helpfulness scores and u
+nderestimate those with low scores. A comprehensive analysis of the underlying causes of this behavior remains a subject for future investigation.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.48\textwidth]{./figures/model_best_scatter.png}
-    \caption{Best Model Errors}
+    \caption{Errors of the Best Model}
     \label{fig:model_best_scatter}
 \end{figure}
 
 \noindent
-The line plot instead, helps in understanding the meaning of given helpfulness score, translating it into Total Votes and Helpfulness Votes.
-The blue line represents the couple of values (Total Votes, Helpfulness Votes) leading to an helpfulness score closer to 0.8, while the red and green lines
-represent the values corresponding to an helpfulness score of 0.8 plus or minus the RMSE. For example on a base of 100 Total Votes, the RMSE of 
-our model corresponds to an excess or defect of roughly 13 votes.\\
+The line plot, on the other hand, provides insights into the meaning of a given helpfulness score by translating it into Total 
+Votes and Helpfulness Votes. The blue line represents the values (Total Votes, Helpfulness Votes) corresponding to a helpfulness 
+score close to 0.8, while the red and green lines represent values corresponding to a helpfulness score of 0.8 plus or minus the RMSE. 
+For instance, for a base of 100 Total Votes, the RMSE of our model corresponds to an excess or deficit of approximately 13 votes.
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.48\textwidth]{./figures/model_best_lines.png}
-    \caption{Best Model Errors Translation}
+    \caption{Translation of Helpfulness Score Errors}
     \label{fig:model_best_lines}
 \end{figure}
+
 
 
 

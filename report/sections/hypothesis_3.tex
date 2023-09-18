@@ -1,28 +1,31 @@
 \subsection*{Hypothesis 3}
 
-\textbf{H0 (Null Hypothesis):} There is no correlation between the rating of a review and its helpfulness score.\\
-As in the previous hypothesis, we decided to deal with missing values and data transformation directly with a MongoDB query. With the data ready to
-be processed, we decided to perform a prior investigation on the distribution of votes on the 4 rating categories. As shown by Figure \ref{fig:h3_votes_distribution},
-there is a \textbf{positive bias} as people are more prone to vote a positive reviews rather than a negative one. Specifically, the large majority of votes
-for rating 5, were composed by a number of total votes just equal to 1. This introduces a bias in our results, since according to the formula used 
-to compute the helpfulness score, such a small number of total votes would lead to a small helpfulness score.
-To avoid this we decided to retain only the reviews with a number of total votes greater than 20.
+\textbf{H0 (Null Hypothesis):} There is no correlation between the rating of a review and its helpfulness score.
+\noindent
+Similar to the previous hypothesis, we addressed missing values and data transformations directly with a MongoDB query. 
+With the data prepared for analysis, we conducted an initial examination of the distribution of votes across the four rating 
+categories. Figure \ref{fig:h3_votes_distribution} reveals a **positive bias** wherein individuals tend to vote more for 
+positive reviews than negative ones. Specifically, a significant portion of votes for rating 5 consists of reviews with a 
+total vote count equal to 1. This introduces bias into our results because, based on the formula used to compute the 
+helpfulness score, a small total vote count would lead to a low helpfulness score. To mitigate this, we retained only 
+reviews with a total vote count greater than 20.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{./figures/h3_votes_distribution.png}
-    \caption{Distribution of votes on the 4 rating categories}
+    \caption{Distribution of votes across the four rating categories}
     \label{fig:h3_votes_distribution}
 \end{figure}
-\noindent 
-The Spearman correlation coefficient between the two variables is equal to $0.5247$, with a p-value of $0.0$. \\
+
+\noindent
+The Spearman correlation coefficient between the two variables is $0.5247$, with a p-value of $0.0$.\\
 \textbf{Conclusion:}
-The hypothesis is confirmed as there is a positive and statistically significant correlation between the two variables. This result is confirmed by 
-the boxplot in Figure \ref{fig:h3_boxplot}.
+The hypothesis is confirmed as there is a positive and statistically significant correlation between the review rating 
+and helpfulness score. This finding is further supported by the boxplot in Figure \ref{fig:h3_boxplot}.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{./figures/h3_boxplot.png}
-    \caption{Boxplot of the correlation between review rating and helpfulness score}
+    \caption{Boxplot illustrating the correlation between review rating and helpfulness score}
     \label{fig:h3_boxplot}
 \end{figure}

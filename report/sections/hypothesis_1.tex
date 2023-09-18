@@ -1,17 +1,18 @@
 \subsection*{Hypothesis 1}
 
 \textbf{H0 (Null Hypothesis):} There is a positive correlation between the length of a review and its helpfulness score.\\
-
-The data cleaning and 'review/helpfulness' transformation process ($helpfulness score = \frac{x}{y} \sqrt(y)$) was performed using the \textit{`pymongo`} library to exploit the 
-MongoDB efficiency. Specifically, we defined a pipeline to perform the needed operations. As regards the 
-'review/text' transformation, we used the \textit{`nltk`} library to tokenize the text, remove punctuation, stopwords and eventually
-count the number of words.\\
-The correlation coefficient between the two variables is $0.3313$ with a p-value $<0.05$, indicating a statistically significant correlation.\\
-A graphical confirmation is provided by Figure \ref{fig:h1_boxplot}. Indeed there is a positive correlation until around 400 words, after which the
-boxplot stabilizes. Thereby, we decided to analyze the correlation within the review length groups. As a results (Table \ref{corr_groups}) we got that the correlation is
-positive and statistically significant for the reviews with length between 0 and 400 words, while it becomes negative and statistically significant
-for the reviews with length greater than 750 words. As regards the reviews in the middle (i.e. between 400 and 750 words), the correlation is negligible.\\
-\textbf{Conclusion:} The hypothesis is confirmed, but the correlation is not very strong and changes depending on the review length.\\
+\noindent
+The data cleaning and 'review/helpfulness' transformation process ($\text{helpfulness score} = \frac{x}{y} \sqrt{y}$) was executed using the `pymongo` library to leverage the efficiency of MongoDB. 
+Specifically, we designed a pipeline to perform the necessary operations. Regarding the 'review/text' transformation, we employed the `nltk` 
+library to tokenize the text, remove punctuation, stopwords, and subsequently count the number of words.\\
+The correlation coefficient between the two variables is 0.3313 with a p-value < 0.05, indicating a statistically significant correlation.
+A graphical representation confirming this correlation can be found in Figure \ref{fig:h1_boxplot}. There is a positive correlation observed until 
+approximately 400 words, beyond which the boxplot stabilizes. Consequently, we conducted an analysis of the correlation within specific review length 
+groups. As a result (Table \ref{corr_groups}), we observed a positive and statistically significant correlation for reviews with lengths between 0 and 400 words. 
+However, for reviews longer than 750 words, the correlation becomes negative and statistically significant. For reviews falling in the intermediate range 
+(between 400 and 750 words), the correlation is negligible.
+\noindent
+\textbf{Conclusion:} The hypothesis is confirmed, but the correlation is not very strong and varies depending on the length of the review.
 
 \begin{figure}[H]
     \centering
@@ -35,5 +36,6 @@ for the reviews with length greater than 750 words. As regards the reviews in th
     3000 & -0.1418 & 0.0065 \\
     \hline
     \end{tabular}
-    \end{table}
-\label{corr_groups}
+    \label{corr_groups}
+\end{table}
+
