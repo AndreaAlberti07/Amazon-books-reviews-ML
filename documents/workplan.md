@@ -40,7 +40,7 @@ Goal of the project is to develop a scalable solution to analyze a dataset of re
 ### 1.4. Data Collection
 
 The chosen dataset is [Amazon Books Reviews](https://www.kaggle.com/datasets/mohamedbakhet/amazon-books-reviews).
-142.8 million reviews spanning May 1996 - July 2014. The dataset is composed by 2 tables:
+3 million reviews spanning May 1996 - July 2014. The dataset is composed by 2 tables:
 
 ### - Books Ratings table
 

@@ -1,23 +1,10 @@
 \subsection*{Hypothesis 1}
 
 Reviews with longer text have higher helpfulness ratings.\\
-\noindent
-\textbf{Metric:} Correlation coefficient (e.g., Pearson's correlation) between review length and helpfulness score.\\
-\noindent
-\textbf{Missing Values:}
-\begin{itemize}
-    \item \textit{`review/text`:} remove the entire sample
-    \item \textit{`review/helpfulness`:} remove the entire sample
-\end{itemize}
-\noindent
-\textbf{Data Transformation:}
-\begin{itemize}
-    \item \textit{`review/text`:} Count the number of words in each review removing punctuation and stopwords.
-    \item \textit{`review/helpfulness`:} $helpfulness = \frac{x}{y} \sqrt(y)$
-\end{itemize}\vspace{0.5cm}
+
 \noindent
 \textbf{Description and Results}
-The data cleaning and 'review/helpfulness' transformation process was performed using the \textit{`pymongo`} library to exploit the 
+The data cleaning and 'review/helpfulness' transformation process ($helpfulness = \frac{x}{y} \sqrt(y)$) was performed using the \textit{`pymongo`} library to exploit the 
 MongoDB efficiency. Specifically, we defined a pipeline to perform the needed operations. As regards the 
 'review/text' transformation, we used the \textit{`nltk`} library to tokenize the text, remove punctuation, stopwords and eventually
 count the number of words.\\
