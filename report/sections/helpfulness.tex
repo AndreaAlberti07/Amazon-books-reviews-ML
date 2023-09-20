@@ -8,17 +8,17 @@ Given the complexity of the problem, we opted to employ a \textit{Word Embedding
 vectors of real numbers while preserving their semantic meaning. We utilized the \textit{Gensim} library to perform this task, using the
 following parameters for the model:
 \begin{itemize}[noitemsep, leftmargin=*]
-    \item \textbf{Size}: 30
+    \item \textbf{Size}: 30 and 150
     \item \textbf{Window}: 5
     \item \textbf{Min Count}: 2
     \item \textbf{Workers}: -1
 \end{itemize}
-Consequently, each word is represented by a 30-dimensional vector, and the average of these vectors for all words in a review forms the vector
+Consequently, each word is represented by a 30 (or 150) dimensional vector, and the average of these vectors for all words in a review forms the vector
 representation of the review.
 
 \subsection*{Models}
 We evaluated three different models:\textit{Random Forest},\textit{Support Vector Regressor (RBF kernel)}, and\textit{Multi-Layer Perceptron (MLP)}.
-We employed the\textit{Scikit-Learn} library for model training and testing, utilizing the\textit{GridSearchCV} class to perform cross-validation on
+We employed the\textit{Scikit-Learn} library for model training and testing, utilizing the \textit{GridSearchCV} class to perform cross-validation on
 the training set to identify the best model parameters. The results are presented in Table \ref{tab:model_results} and visualized in Figure
 \ref{fig:model_results}.
 
@@ -56,7 +56,8 @@ optimal balance between performance and computational cost.
 \subsection*{Results Interpretation}
 Figures \ref{fig:model_best_scatter} and \ref{fig:model_best_lines} aid in interpreting the results. The scatter plot visually represents
 the distribution of errors, revealing that the model tends to overestimate the helpfulness of reviews with high helpfulness scores and
-underestimate those with low scores. A comprehensive analysis of the underlying causes of this behavior remains a subject for future investigation.
+underestimate those with low scores. A comprehensive analysis of the underlying causes of this behavior, particularly focused on the 
+feature engineering process, remains a subject for future investigation.
 
 \begin{figure}[H]
     \centering

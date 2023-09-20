@@ -2,12 +2,11 @@
 
 \textbf{H0 (Null Hypothesis):} There is no correlation between the number of books published for a category (or publisher) and the review score.\\
 All data cleaning and transformation steps were executed using MongoDB's aggregation pipeline to ensure efficient and rapid computation.
-Specifically, data cleaning involved the use of the \textit{\$match} operator, while data transformation steps were carried out with
-the \textit{\$group} operator, utilizing the \textit{\$avg} operation. Finally, the \textit{\$project} operator was applied to select
-the relevant fields. To reduce bias, we excluded categories with fewer than 50 books and publishers with fewer than 20 books.
+To reduce bias, we excluded categories with fewer than 50 books and publishers with fewer than 20 books.
 The results are presented in Table \ref{tab:h6_correlations}.\\
 \textbf{Conclusion:} The hypotheses are rejected as the metrics reveal no significant correlation between the number of books published
-for a category (or publisher) and the review score in both cases.
+for a category (or publisher) and the review score in both cases. These results surprises us as we expected the more important publishers
+to perform a more meticulous selection of the books to publish, thus leading to a higher average score.\\
 
 \begin{table}[H]
     \footnotesize
@@ -25,6 +24,7 @@ for a category (or publisher) and the review score in both cases.
     \label{tab:h6_correlations}
 \end{table}
 
+\noindent
 \textbf{Curiosity:}
 We executed two complex MongoDB queries to answer two intriguing questions:
 
@@ -33,6 +33,7 @@ We executed two complex MongoDB queries to answer two intriguing questions:
     \item \textbf{In which categories are the best publishers focused?}
 \end{itemize}
 
+\noindent
 The results of these queries are presented in Figure \ref{fig:h6_which_best} and Figure \ref{fig:h6_where_best}.
 
 \begin{figure}[H]
