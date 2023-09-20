@@ -28,10 +28,10 @@ To analyze the data the following tools will be used together with Python:
 
 ### 1.3. Framing
 
-Goal of the project is to develop a scalable solution to analyze a dataset of reviews of books from Amazon. Possible analysis are:
+Goal of the project is to develop a scalable solution to analyze a dataset of reviews of books from Amazon and fit a ML model on them. Possible goals are:
 
 - Sentiment Analysis
-- Review Helpfulness Prediction
+- Review Helpfulness Prediction (Chosen by us)
 - Topic Modeling
 - Recommendation System
 - Common Issues Analysis
@@ -78,14 +78,6 @@ The chosen dataset is [Amazon Books Reviews](https://www.kaggle.com/datasets/moh
 
    - **Metric**: Correlation coefficient (e.g., Pearson's correlation) between review length and helpfulness ratings. Plot the correlation coefficient as a function of the review length.
 
-   - **Model**: Linear Regression.
-
-   - **Description**:
-     - Add a column for each review's length.
-     - Use the review length as the predictor variable and the helpfulness rating as the target variable. (i.e. activate feature only above a given threshold)
-     - Train a linear regression model to predict helpfulness ratings based on review length.
-     - The correlation coefficient can also be calculated as a post-processing step.
-
 - **Missing Values**:
 
   - `review/text`: set missing values as empty string
@@ -108,7 +100,7 @@ The chosen dataset is [Amazon Books Reviews](https://www.kaggle.com/datasets/moh
 
      - Use NBC as a classifier to predict the sentiment of a review.
      - Extract the most useful words from the classifier.
-     - Compute the mean helpfulness ratings for the most useful words.
+     - Compute the number of positive words in each review.
 
 - **Missing Values**:
 
@@ -119,21 +111,14 @@ The chosen dataset is [Amazon Books Reviews](https://www.kaggle.com/datasets/moh
 - **Data Transformation**:
 
   - `review/score`: Assign 1 to score (4, 5), 0 to score (1, 2).
-  - `review/text`: Create the BoW for the text. Fit a MNBC and count the number of positive and negative words. Graphical Plot.
+  - `review/text`: Create the BoW for the text. Fit a MNBC and count the number of positive words. Graphical Plot.
   - `review/helpfulness`: $helpfulness = \frac{x}{y} \sqrt(y)$
 
     ***
 
 3. **_Hypothesis_**: Reviews with higher average book ratings have higher helpfulness ratings.
 
-   - **Metric**: Correlation between average book ratings and helpfulness ratings.
-
-   - **Model**: Linear Regression
-
-   - **Description**:
-
-     - Use the average book rating as the predictor variable and the helpfulness rating as the target variable.
-     - Train a linear regression model to predict helpfulness ratings based on average book ratings.
+   - **Metric**: Correlation between book ratings and helpfulness ratings.
 
 - **Missing Values**:
 
@@ -145,49 +130,49 @@ The chosen dataset is [Amazon Books Reviews](https://www.kaggle.com/datasets/moh
   - `review/score`: groupBy book title and calculate the average score.
   - `review/helpfulness`: $helpfulness = \frac{x}{y} \sqrt(y)$
 
-    ***
+- **Positive Bias**: people are more prone to vote a positive review, indeed there is a correlation between the number of votes and the book rating. Specifically, the number of positive reviews getting a single vote is very high and this might lead to a bias in the helpfulness score, since it is computed by this formula: 
 
-4. **_Hypothesis_**: The rating score is influenced by individual users, whose unique personalities and personal preferences may lead them to either overestimate or underestimate a book's quality. In addition, the Anonymous tends to overrate the books
+$helpfulness = \frac{x}{y} \sqrt(y)$   where $x$ is the number of positive votes and $y$ is the total number of votes.
 
-   - **Metric**: Rating score
-
-   - **Model**: Linear regression
-
-   - **Description**:
-
-- **Missing Values**:
-
-  - `profileName`: set missing values as unknown
-  - `review/score`: remove the entire sample
-
-- **Data Transformation**:
+To face this problem, we decided to filter the data and consider only the reviews with a number of votes greater than 20.
 
   ***
 
-5. **_Hypothesis_**:The review/score is influenced by the category of the book
+4. **_Hypothesis_**:  
+   The rating score is influenced by individual users, whose unique personalities and personal preferences may lead them to either overestimate or underestimate a book's quality. In addition, the Anonymous tends to overrate the books
 
-   - **Metric**: average review/score
-
-   - **Model**:Polynomial regression
-
-   - **Description**:
+   - **Metric**: ANOVA test, kolmogorov-smirnov
 
 - **Missing Values**:
 
-  - `publishedDate`: remove the entire sample
-  - `category`: remove the entire sample
-  - `review/score`: remove the entire sample
+  - `profileName`: Missing values are set as "Anonymous"
+  - `review/score`: The entire sample is removed.
 
-- **Data Transformation**:
+- **Hypotheses**:
+  - **H0**: The rating score is not related to the `profileName`, as all rating scores originate from the same distribution. If we consider the rating score of each user, they have the same mean and variance.
+
+  - **H1**: The rating score is affected by the user, meaning the rating scores of each user follow a different distribution.
+
+For the sake of consistency in this analysis, users with fewer than 20 reviews are excluded. This is because a lower number of reviews is insufficient to significantly estimate statistical measures.
 
   ***
 
-6. **_Hypothesis_**: The larger the number of books published for a category, the higher the review score.(marketing strategy, the publishers tend to publish books of the most liked category)  
-    The larger the number of books published by publishers, the higher the review score (books published by the most famous publishers are preferred)
+5. **_Hypothesis_**:
+The review/score is influenced by the category of the book
+   - **Metric**: ANOVA test
 
-   - **Metric**: correlation coefficients, Kolmogorov-Smirnov, Chi-Square, Wilcoxon (for future normalization)
+- **Hypotheses**:
+  - **H0**: The rating score is not related to the `categories`, as all rating scores originate from the same distribution. If we consider the rating score of each category, they have the same mean and variance.
 
-   - **Model**: None
+  - **H1**: The rating score is affected by the category, meaning the rating scores of each category follow a different distribution.
+
+For the sake of consistency in this analysis, categories with fewer than 20 reviews are excluded. This is because a lower number of reviews is insufficient to significantly estimate statistical measures.
+
+***
+
+6. **_Hypothesis_**: The larger the number of books published for a category, the higher the review score. (marketing strategy, the publishers tend to publish books of the most liked category). The larger the number of books published by publishers, the higher the review score (books published by the most famous publishers are preferred)
+
+   - **Metric**: correlation coefficient
 
 - **Missing Values**:
 
@@ -276,195 +261,156 @@ spark.stop()
 
 - Remove duplicates
 - Deal with missing values
+- Splitting the `review/helpfulness` column into two columns: `helpfulness_numerator` and `helpfulness_denominator`
 
-```python
-from pyspark.sql import SparkSession
-from pyspark.sql.functions import col
-
-# Initialize a Spark session
-spark = SparkSession.builder \
-    .appName("DuplicateRemovalAndMissingDataHandling") \
-    .getOrCreate()
-
-# Load data from CSV files into DataFrames
-ratings_df = spark.read.csv("path_to_ratings.csv", header=True, inferSchema=True)
-info_df = spark.read.csv("path_to_books_info.csv", header=True, inferSchema=True)
-
-# Drop duplicates from ratings DataFrame based on ID
-ratings_df = ratings_df.dropDuplicates(subset=["Id"])
-
-# Fill missing values in ratings DataFrame with default values
-ratings_df = ratings_df.fillna({"Price": 0.0, "review/score": 0.0})
-
-# Drop duplicates from info DataFrame based on Title
-info_df = info_df.dropDuplicates(subset=["Title"])
-
-# Fill missing values in info DataFrame with default values
-info_df = info_df.fillna({"authors": "Unknown", "categories": "Unknown"})
-
-# Perform the join operation on the Title column
-joined_df = ratings_df.join(info_df, on="Title", how="inner")
-
-# Select desired columns from the joined DataFrame
-selected_columns = [
-    "Title", "Price", "User_id", "profileName",
-    "review/helpfulness", "review/score",
-    "authors", "categories"
-]
-result_df = joined_df.select(selected_columns)
-
-# Show the resulting DataFrame
-result_df.show()
-
-# Stop the Spark session
-spark.stop()
-```
 
 ### 2.3. Data Aggregation
 
 - Program a MapReduce job to join the data by book title
-
-```python
-# Mapper function for Books Ratings table
-def map_ratings(line):
-    fields = line.split("\t")  # Assuming fields are tab-separated
-    book_title = fields[1]
-    # Emit (book_title, ("ratings", fields)) as key-value pair
-    emit(book_title, ("ratings", fields))
-
-# Mapper function for Books Info table
-def map_info(line):
-    fields = line.split("\t")  # Assuming fields are tab-separated
-    book_title = fields[0]
-    # Emit (book_title, ("info", fields)) as key-value pair
-    emit(book_title, ("info", fields))
-
-# Reducer function
-def reduce_join(key, values):
-    ratings = []
-    info = []
-
-    # Separate values into ratings and info lists based on their source
-    for value_type, fields in values:
-        if value_type == "ratings":
-            ratings.append(fields)
-        elif value_type == "info":
-            info.append(fields)
-
-    # Perform the join operation
-    for rating_fields in ratings:
-        for info_fields in info:
-            # Emit joined information as key-value pair
-            emit(None, (rating_fields + info_fields))
-
-# Input: Read lines from both tables
-for line in BooksRatingsTable:
-    map_ratings(line)
-
-for line in BooksInfoTable:
-    map_info(line)
-
-# Sort and shuffle step
-sort_and_shuffle()
-
-# Process sorted and shuffled data
-for key, values in shuffled_data:
-    reduce_join(key, values)
-```
 
 - Run the MapReduce job on Hadoop
 
 ```bash
 # Run a Hadoop Streaming job using the Hadoop Streaming JAR file
 
-# Specify the files to be distributed to Hadoop nodes (Mapper and Reducer scripts)
-hadoop jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-*.jar \
--files join_mapper.py,join_reducer.py \
+# Specify the Hadoop Streaming JAR file
+HADOOP_STREAMING_JAR="$HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-3.3.6.jar"
 
-# Specify the Mapper script to be used for the job (join_mapper.py)
--mapper join_mapper.py \
-
-# Specify the Reducer script to be used for the job (join_reducer.py)
--reducer join_reducer.py \
+# Specify the Mapper and Reducer scripts
+MAPPER_SCRIPT="join_mapper.py"
+REDUCER_SCRIPT="join_reducer.py"
 
 # Specify the input data sources (CSV files to be processed)
--input /path/to/books_ratings.csv,/path/to/books_info.csv \
+INPUT_FILES="hdfs://localhost:9900/user/book_reviews/books_data_cleaned.csv,hdfs://localhost:9900/user/book_reviews/books_rating_cleaned.csv"
 
 # Specify the output directory where the job results will be stored
--output /path/to/output_directory
-```
+OUTPUT_DIR="hdfs://localhost:9900/user/book_reviews/joined_tables"
 
-### 2.4. Data Transformation
+# Run the Hadoop Streaming job
+hadoop jar $HADOOP_STREAMING_JAR \
+-D stream.num.map.output.key.fields=2 \
+-D mapreduce.partition.keycomparator.options='-k1,1 -k2,2' \
+-files $MAPPER_SCRIPT,$REDUCER_SCRIPT \
+-mapper "$MAPPER_SCRIPT" \
+-reducer "$REDUCER_SCRIPT" \
+-input $INPUT_FILES \
+-output $OUTPUT_DIR
+```
 
 ### 2.5. Load into MongoDB
 
 ```bash
-pip install pymongo[tls] pyspark
+pip install pymongo pyspark
 ```
-
-```python
-from pyspark.sql import SparkSession
-from pyspark.sql.functions import col
-from pyspark.sql.types import StructType, StructField, IntegerType, StringType, FloatType
-from pyspark.sql import DataFrameWriter
-
-# Initialize a Spark session
-spark = SparkSession.builder \
-    .appName("LoadDataToMongoDB") \
-    .config("spark.mongodb.output.uri", "mongodb://localhost:27017/mydb.collection") \
-    .getOrCreate()
-
-# Define schema for the transformed data
-transformed_schema = StructType([
-    StructField("Title", StringType(), True),
-    StructField("Price", FloatType(), True),
-    StructField("User_id", IntegerType(), True),
-    # ... define other transformed fields
-])
-
-# Load, filter, and transform data
-ratings_df = spark.read.csv("path_to_ratings.csv", header=True, inferSchema=True)
-
-filtered_ratings_df = ratings_df.filter(col("review/score") >= 4)  # Example filter
-
-transformed_df = filtered_ratings_df.select("Title", "Price", "User_id")
-
-# Write the transformed data to MongoDB
-transformed_df.write \
-    .format("mongo") \
-    .mode("overwrite") \
-    .save()
-
-# Stop the Spark session
-spark.stop()
-```
+- Look at `import_mongoDB.ipynb`
 
 ### 2.6. Complex MongoDB query
 
-### 2.7. Feature Extraction
+They are two and can be found inside `hypothesis_6.ipynb`
+
+```python
+# Deal with missing values
+pipeline_missing = {'$match': {
+    'review/score': {'$exists': True, '$ne': 0},
+    'publisher': {'$exists': True, '$ne': None},
+    'categories': {'$exists': True},
+}
+}
+
+# Compute average rating for each tuple category, publisher
+pipeline_average_rating = {'$group': {
+    '_id': {
+        'category': '$categories',
+        'publisher': '$publisher',
+    },
+    'avg_score': {'$avg': '$review/score'},
+    'count': {'$sum': 1}
+}
+}
+
+# Show average rating for category for each publisher
+pipeline_publisher = {'$group': {
+    '_id': '$_id.category',
+    'avg_score/publisher': {
+        '$push': {
+            'publisher': '$_id.publisher',
+            'avg_score': '$avg_score',
+            'count': '$count'
+        }
+    }
+}
+}
+
+# Unwind the list of categories
+pipeline_unwind = {'$unwind': '$avg_score/publisher'}
+
+# Remove categories or publisher with less than 'threshold' reviews
+threshold = 0
+pipeline_remove = {'$match': {
+    'avg_score/publisher.count': {'$gte': threshold}
+}
+}
+
+# Count the number of categories with average rating > 4.5
+pipeline_counts = {'$project': {
+    'category': '$_id',
+    '_id': 0,
+    'publisher': '$avg_score/publisher.publisher',
+    'count': {
+        '$sum': {
+            '$cond': {
+
+                'if': {'$gt': ['$avg_score/publisher.avg_score', 4.5]},
+                'then': 1,
+                'else': 0
+            }
+        }
+    }
+}
+}
+
+# Sum the results for each publisher. If Total > 10, then the hypothesis is False
+pipeline_sum = {'$group': {
+    '_id': '$category',
+    'total': {'$sum': '$count'}
+}
+}
+
+pipeline_sort = {'$sort': {
+    'total': -1
+}
+}
+
+results = books.aggregate([pipeline_missing, pipeline_average_rating, pipeline_publisher,
+                          pipeline_unwind, pipeline_remove, pipeline_counts, pipeline_sum, pipeline_sort])
+
+df_results = pd.DataFrame(list(results))
+```
+
+### 2.7. Features Extraction
+
+To provide the model with the capabilities of understanding the context and detect similar words, instead of using a simple bag of words representation, we opted for a word embedding approach. In particular, we used the Word2Vec model provided by the Gensim library. The model is trained on the train set and then used to transform the reviews in a vector representation.
+The model specification is:
+- **vector_size**: 30 and 150
+- **window**: 5
+- **min_count**: 2
 
 ### 2.8. Local analysis with Python Libraries
+The analysis are located inside 'notebooks/hypothesis_testing' folder.
 
 ## 3. MODEL CHOICE
-
-### 3.1. Classification
-
+Since we want to predict the helpfulness starting from the review text, we are dealing with a regression problem.
 ### 3.1.2. Regression
-
-### 3.1.3. Clustering
-
-### 3.1.4. Dimensionality Reduction
+The model we compared are:
+- Random Forest Regressor
+- Support Vector Regressor
+- Multilayer Perceptron Regressor
 
 ## 4. MODEL BUILDING
+The model have been trained using the Scikit-learn library. The training set is composed by 80% of the data, while the remaining 20% is used as test set.
+To test the models with different hyperparameters we used the `GridSearchCV` class provided by the Scikit-learn library.
 
 ## 5. EVALUATION
-
-### 5.1. Accuracy
-
-### 5.1.2. PR
-
-### 5.1.3. ROC
-
-### 5.1.4. MSE
-
+To evaluate the model we used the cross validation technique, provided by the Scikit-learn library in `GridSearchCV` class. The evaluation metric used is the Mean Squared Error (MSE). Furthermore, we defined an 'interpretation plot' to translate the results into a more understandable form, associating to each score a possible
+combination of helpfulness numerator and helpfulness denominator leading to a score of ~0.8.
 ## 6. REPORTING
