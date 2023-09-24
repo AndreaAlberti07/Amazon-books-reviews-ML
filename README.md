@@ -76,6 +76,9 @@ This repository is organized into the following folders, each serving a specific
 
 - **Report :**
   Contains LaTeX files for creating the project report. This is where you can find the documentation and presentation materials summarizing our project's goals, methodology, findings, and conclusions.
+
+- **Presentation :**
+  Contains template and images used in the PowerPoint presentation
 ## Trained models
 The models trained during the project execution are available at the following [Google Drive folder](https://drive.google.com/drive/folders/1kgpb66SaGIKC7ud7nEyKdYnnswlh9VRY?usp=sharing)
 ## Contact
