@@ -1,7 +1,8 @@
 # Amazon Book Reviews Analysis
 
 This repository contains code and resources for analyzing Amazon book reviews. The project aims to develop scalable solutions for various analyses, including sentiment analysis, review helpfulness prediction, topic modeling, and more.
-
+- **Report** ([link](https://github.com/DavideLigari01/data-science-project/blob/main/report/report.pdf))
+- **Presentation** ([link](https://unipvit-my.sharepoint.com/:p:/r/personal/davide_ligari01_universitadipavia_it/Documents/Presentation.pptx?d=w9eb2b9d157024928bf186aa2906899f4&csf=1&web=1&e=Fwgt00))
 ## Team
 
 - **Andrea Alberti** ([GitHub](https://github.com/AndreaAlberti07))
@@ -75,6 +76,9 @@ This repository is organized into the following folders, each serving a specific
 
 - **Report :**
   Contains LaTeX files for creating the project report. This is where you can find the documentation and presentation materials summarizing our project's goals, methodology, findings, and conclusions.
+
+- **Presentation :**
+  Contains template and images used in the PowerPoint presentation
 ## Trained models
 The models trained during the project execution are available at the following [Google Drive folder](https://drive.google.com/drive/folders/1kgpb66SaGIKC7ud7nEyKdYnnswlh9VRY?usp=sharing)
 ## Contact
