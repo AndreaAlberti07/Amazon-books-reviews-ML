@@ -84,4 +84,4 @@ The models trained during the project execution are available at the following [
 
 If you have any questions or need further information about this project, please feel free to contact us
 
-Thank you for your interest in this image recognition project!
+Thank you for your interest in this project!
