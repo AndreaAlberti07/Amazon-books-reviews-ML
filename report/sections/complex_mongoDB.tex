@@ -1,0 +1,16 @@
+%% Complex MongoDB query to answer: In which categories are the best publishers focused?
+
+\section{Complex MongoDB query}
+
+A MongoDB query is designed to identify the categories that top publishers prioritize.
+It achieves this by filtering out records with missing or zero review scores,
+as well as those without publisher and category information.
+The query then calculates the average rating for each combination of category and publisher.
+Next, it groups the results by category, gathering average scores and review counts for each publisher
+within that category. The query also expands the list of categories and eliminates categories or
+publishers with review counts below a specified threshold.\\
+Further analysis involves counting the number of categories where the average rating exceeds 4.5 for each publisher.
+The results are aggregated by category, and the total count is assessed. Finally, the query sorts the outcomes
+in descending order of the total count.\\
+The python code that performs this query can be found at this \href{https://github.com/DavideLigari01/data-science-project/blob/main/notebooks/hypotesis_testing/hypothesis_6.ipynb}{link},
+in the section \textit{Further analysis: which are the best publishers?}.

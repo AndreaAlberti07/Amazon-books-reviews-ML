@@ -1,0 +1,16 @@
+\subsection*{MongoDB Loading}
+Upon completion of all previous operations, the next step involved the creation of a sandbox environment for local hypothesis testing.
+We chose to use MongoDB as DBMS due to its flexibility and ease of use.
+The process included the following steps:
+
+\begin{itemize}[leftmargin=*, noitemsep]
+    \item Connect to MongoDB using the `pymongo` library.
+    \item Establish a connection to HDFS and read the data using the `spark.read.csv` method.
+    \item Randomly select a subset (300 k samples) of the Spark DataFrame for import, employing the `sample` method.
+    \item Transform the data into a dictionary format using the `to\_dict` method.
+    \item Insert the transformed data into MongoDB using the `insert\_many` method.
+\end{itemize}
+
+\noindent
+We imported both the `ratings` and `books\_info` tables into MongoDB, along with the resultant joined table generated through
+the MapReduce process. These datasets were instrumental in conducting the local hypothesis testing described below.

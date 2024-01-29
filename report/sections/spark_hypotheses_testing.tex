@@ -1,0 +1,37 @@
+\section{Spark Hypotheses Testing}
+To showcase the feasibility of implementing data analysis within a Big Data context, we opted to replicate some hypothesis testing using
+Spark, focusing particularly on Hypotheses 1 and 3.
+
+\subsection*{Hypothesis 1}
+Addressing this hypothesis involved several key steps:
+
+\begin{itemize}[leftmargin=*, noitemsep]
+      \item \textbf{Compute the Helpfulness Score:}
+            This was straightforwardly achieved by leveraging the `WithColumn` method of the Spark DataFrame, creating a new column with the updated values.
+
+      \item \textbf{Compute the Text Length:}
+            Text length computation was accomplished by utilizing `regexp\_replace` to eliminate punctuation, along with `Tokenizer` and `StopWordsRemover`
+            to tokenize the text and remove stop words. Subsequently, a new column containing the text length was generated.
+
+      \item \textbf{Bucketize the Text Length:}
+            To address this requirement, we utilized the `Bucketizer` class from Spark MLlib in conjunction with a User Defined Function (UDF) to
+            assign appropriate labels to the classes.
+
+      \item \textbf{Compute the Correlation Coefficient:}
+            Finally, the correlation coefficient was computed using the `Correlation.corr` method from Spark MLlib, specifically the Spearman correlation
+            coefficient. The data was reshaped to conform to the required format using `VectorAssembler`.
+
+\end{itemize}
+
+\subsection*{Hypothesis 2}
+To examine this hypothesis, we utilized Spark MLlib's capabilities to build a Naive Bayes model.
+This model was trained to identify positive words within the dataset.
+Following this, we computed the occurrence of the top 800 most positive words in each review.\\
+We then obtained a Spearman correlation coefficient between helpfulness score and number of positive words of 0.318.
+\subsection*{Hypothesis 3}
+This hypothesis involved computing the helpfulness score and correlation coefficient, both of which were calculated using the same methods
+described in the previous hypothesis.
+
+\subsection*{Results}
+In all test cases, the results closely mirrored those obtained in the local environment.
+
